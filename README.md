@@ -1,2 +1,2 @@
 # cat-a-log
-Create structured logs & send to AWS Cloudwatch logs
+Create & send structured logs to AWS Cloudwatch logs
