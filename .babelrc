@@ -1,0 +1,13 @@
+{
+    "presets": [
+      "@babel/preset-env",
+      [
+        "@babel/preset-react",
+        {
+          "runtime": "automatic" // allows use of JSX w/out import React from "react" in every component file - BMA
+        }
+      ]
+    ],
+    "plugins": ["@babel/plugin-transform-runtime"]
+  }
+  

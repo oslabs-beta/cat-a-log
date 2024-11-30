@@ -1,0 +1,18 @@
+<!-- Used by HTMLWebpackPlugin (per plugins config in webpack.config.js)
+  to build index.html with each webpack rebuild/rebundle -->
+
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <title>%= htmlWebpackPlugin.options.title %</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+    </head>
+    <body>
+        <h1 class="text-4xl text-blue-700">My Webpack + Tailwind App</h1>
+        <script src="dist/bundle.js"></script>
+      <!-- Insert React App here -->
+      <div id="root"></div>
+    </body>
+  </html>
