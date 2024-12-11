@@ -10,7 +10,7 @@
     "dev": "concurrently \"cross-env NODE_ENV=development webpack-dev-server --open --hot --progress --color \" \"nodemon ./server/server.js\""
   },
   "keywords": [],
-  "author": "",
+  "author": "Clara, Curran, Harris, Jacob, Brian",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.25.7",
@@ -44,15 +44,18 @@
     "@testing-library/jest-dom": "^6.6.2",
     "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^14.5.2",
+    "aws": "^0.0.3-2",
+    "aws-sdk": "^2.1692.0",
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.4.7",
     "express": "^4.21.1",
     "express-session": "^1.18.1",
     "jest-environment-jsdom": "^29.7.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.27.0"
+    "react-router-dom": "^6.27.0",
+    "sdk": "^0.5.0"
   }
 }
