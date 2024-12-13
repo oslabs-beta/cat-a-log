@@ -5,9 +5,10 @@ import { RDSClient, DescribeDBInstancesCommand } from "@aws-sdk/client-rds"; // 
 // const { RDSClient, DescribeDBInstancesCommand } = require("@aws-sdk/client-rds"); // CommonJS import
 const client = new RDSClient({
   region: "us-east-2",
-  credentials: fromIni ({
+  credentials: ({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    sessionToken: process.env.AWS_SESSION_TOKEN,
   })
 });
 const input = { // DescribeDBInstancesMessage
