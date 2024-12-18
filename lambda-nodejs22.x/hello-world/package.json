@@ -7,7 +7,10 @@
   "author": "SAM CLI",
   "license": "MIT",
   "dependencies": {
-    "axios": ">=1.6.0"
+    "axios": ">=1.6.0",
+    "@aws-lambda-powertools/logger": "^2.11.0",
+    "@aws-lambda-powertools/metrics": "^2.11.0",
+    "lambda-log": "^3.1.0"
   },
   "scripts": {
     "test": "mocha tests/unit/"
