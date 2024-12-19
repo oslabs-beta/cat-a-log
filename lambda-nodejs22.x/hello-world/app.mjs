@@ -12,9 +12,7 @@
  */
 
 import { Logger } from '@aws-lambda-powertools/logger';
-import * as log from 'lambda-log';
 const logger = new Logger({ serviceName: 'serverlessAirline' });
-
 export const lambdaHandler = async (event, context) => {
     const response = {
       statusCode: 200,
@@ -23,9 +21,11 @@ export const lambdaHandler = async (event, context) => {
       })
     };
 
-    const testObj = {
+    //catalog('CustomerID', customerId , 'Customers', 'number');
+
+    logger.info('testEMF using logger.info', {
       testguy: "hi",
-      fool: 42,
+      testLogger: 72,
       functionVersion: "$LATEST",
       _aws: {
         Timestamp: Date.now(),
@@ -35,7 +35,7 @@ export const lambdaHandler = async (event, context) => {
             Dimensions: [["functionVersion"]],
             Metrics: [
               {
-                Name: "fool",
+                Name: "testLogger",
                 Unit: "Milliseconds",
                 StorageResolution: 60
               }
@@ -43,8 +43,7 @@ export const lambdaHandler = async (event, context) => {
           }
         ]
       },
-    }
-    log.info('testEMF', JSON.stringify(testObj));
-    return response;
+    });
+return response;
   };
   
