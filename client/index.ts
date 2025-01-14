@@ -4,8 +4,16 @@ import { LogItemExtraInput } from '@aws-lambda-powertools/logger/lib/cjs/types/L
 const logger = new Logger({ serviceName: 'serverlessAirline' });
 
 //catalog(kilos, "kilos" , "lambda-function-metrics", "Kilograms", {'functionVersion': $LATEST, 'testDimension': derp});
-export async function catalog(trackedVariable: any, metricName: string , metricNamespace: string, metricUnitLabel: string, CustomerDefinedDimension: Object={}, resolution: 1 | 60): Promise<void>{
+export async function catalog(trackedVariable: any, metricName: string , metricNamespace: string, metricUnitLabel: string = "None", CustomerDefinedDimension: {[key:string]: string}={}, resolution: 1 | 60=60): Promise<void>{
   //Check for any errors & validate inputs based on documentations
+  //if Object with Namespace and Dimensions already exists in Set
+    //push the metrics object to Metrics array
+    //add key value to Log
+  //else
+    //create new Structured Log and add it to cachedStructuredLogs
+
+  //after last catalog function is invoked, send all cached logs with logger at once
+  //clear cache
   logger.info("Your EMF compliant Structured Metrics Log",
     Object.assign({
       _aws: {
