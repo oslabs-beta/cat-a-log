@@ -4,9 +4,9 @@ import { LogItemExtraInput } from '@aws-lambda-powertools/logger/lib/cjs/types/L
 const logger = new Logger({ serviceName: 'serverlessAirline' });
 
 //catalog(kilos, "kilos" , "lambda-function-metrics", "Kilograms", {'functionVersion': $LATEST, 'testDimension': derp});
-export async function catalog(trackedVariable: any, metricName: string , metricNamespace: string, metricUnitLabel: string, CustomerDefinedDimension: Object={}): Promise<void>{
+export async function catalog(trackedVariable: any, metricName: string , metricNamespace: string, metricUnitLabel: string, CustomerDefinedDimension: Object={}, resolution: 1 | 60): Promise<void>{
   //Check for any errors & validate inputs based on documentations
-  logger.info(JSON.stringify(
+  logger.info("Your EMF compliant Structured Metrics Log",
     Object.assign({
       _aws: {
         Timestamp: Date.now(),
@@ -18,7 +18,7 @@ export async function catalog(trackedVariable: any, metricName: string , metricN
               {
                 Name: metricName,
                 Unit: metricUnitLabel,
-                StorageResolution: 60
+                StorageResolution: resolution,
               }
             ]
           }
@@ -28,7 +28,7 @@ export async function catalog(trackedVariable: any, metricName: string , metricN
       }, 
         CustomerDefinedDimension
       )
-    )
+    
   )
 }
 

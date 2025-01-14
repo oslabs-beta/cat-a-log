@@ -17,7 +17,7 @@ const logger = new Logger({ serviceName: 'serverlessAirline' });
 
 async function catalog(trackedVariable, metricName , metricNamespace, metricUnitLabel, CustomerDefinedDimension = {}, resolution = 60) {
   //Check for any errors & validate inputs based on documentations
-  logger.info(
+  logger.info("HI HO",
     Object.assign({
       _aws: {
         Timestamp: Date.now(),
