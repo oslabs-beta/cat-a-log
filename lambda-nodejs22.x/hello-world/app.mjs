@@ -46,7 +46,7 @@ async function catalog(trackedVariable, metricName , metricNamespace, metricUnit
           }
         ]
       },
-      [`${metricName}`]: trackedVariableValue,
+      [`${metricName}`]: trackedVariable,
       }, 
         CustomerDefinedDimension
       )
