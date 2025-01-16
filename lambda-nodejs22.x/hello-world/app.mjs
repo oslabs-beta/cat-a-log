@@ -16,20 +16,24 @@ const logger = new Logger({ serviceName: 'serverlessAirline' });
 // import catalog from "client/index.ts";
 const cachedStructuredLogs = new Set();
 
+const cache = {};
 async function catalog(trackedVariable, metricName , metricNamespace, metricUnitLabel, CustomerDefinedDimension = {}, resolution = 60, deploy = false) {
   //Check for any errors & validate inputs based on documentations
-  //Check for any errors & validate inputs based on documentations
-  //if Object already exists in Set
+  //if Object with Namespace and Dimensions already exists in Set
+  let check = cache[`${metricNamespace}${Object.keys(CustomerDefinedDimension).sort()}`];
+  if(check != undefined){
     //push the metrics object to Metrics array
+    cache[`${metricNamespace}${Object.keys(CustomerDefinedDimension).sort()}`]["_aws"]["CloudWatchMetrics"][0]["Metrics"].push({
+        Name: metricName,
+        Unit: metricUnitLabel,
+        StorageResolution: resolution,
+    });
     //add key value to Log
-  //else
-    //create new Structured Log and add it too cachedStructuredLogs
-
-  //after last catalog function is invoked, send all cached logs with logger at once
-  //clear cache
-
-  logger.info("HI HO",
-    Object.assign({
+    check[`${metricName}`] = trackedVariable;
+  }else{
+    //create new Structured Log and add it to cachedStructuredLogs
+    cache[`${metricNamespace}${Object.keys(CustomerDefinedDimension).sort()}`] = 
+      Object.assign({
       _aws: {
         Timestamp: Date.now(),
         CloudWatchMetrics: [
@@ -50,7 +54,42 @@ async function catalog(trackedVariable, metricName , metricNamespace, metricUnit
       }, 
         CustomerDefinedDimension
       )
-    )
+  }
+
+  if(deploy){
+    //after last catalog function is invoked, send all cached logs with logger at once
+    for(let i = 0; i < Object.keys(cache).length; i++){
+      logger.info(`Your EMF compliant Structured Metrics Log ${i+1}`, cache[Object.keys(cache)[i]]);
+    }
+    //clear cache
+    console.log("deploy Before:", cache);
+    for(var member in cache) delete cache[member];
+    console.log("deploy After:", cache);
+  }
+
+  // logger.info("HI HO",
+  //   Object.assign({
+  //     _aws: {
+  //       Timestamp: Date.now(),
+  //       CloudWatchMetrics: [
+  //         {
+  //           Namespace: metricNamespace,
+  //           Dimensions: [Object.keys(CustomerDefinedDimension)],
+  //           Metrics: [
+  //             {
+  //               Name: metricName,
+  //               Unit: metricUnitLabel,
+  //               StorageResolution: resolution,
+  //             }
+  //           ]
+  //         }
+  //       ]
+  //     },
+  //     [`${metricName}`]: trackedVariable,
+  //     }, 
+  //       CustomerDefinedDimension
+  //     )
+  //   )
 }
 
 export const lambdaHandler = async (event, context) => {
@@ -63,7 +102,7 @@ export const lambdaHandler = async (event, context) => {
     let kilos = 70;
     let pounds = 34;
     catalog(pounds, "poundsTest" , "lambda-junction-metrics2", "lbs", {'functionVersion': "$LATEST", 'testDimension': "berp"});
-    catalog(kilos, "Weight" , "lambda-junction-metrics2", "Kilograms", {'functionVersion': "$LATEST", 'testDimension': "berp"});
+    catalog(kilos, "Weight" , "lambda-junction-metrics2", "Kilograms", {'functionVersion': "$LATEST", 'testDimension': "berp"}, 60, true);
     //catalog(pounds, "testLogger2" , "lambda-function-metrics", Milliseconds, {'functionVersion': $LATEST, 'testDimension': derp});
 
     //catalog(trackedVariable: var, metricName: string , metricNamespace: string, metricUnitLabel: string, CustomerDefinedDimension(s): Object {DimensionName: DimensionValue: String, ...}, ...);
