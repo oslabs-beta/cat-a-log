@@ -6,13 +6,25 @@ const logger = new Logger({ serviceName: 'serverlessAirline' });
 //cache entries are structured thusly: 'Namespace + Dimensions(Alphabetically)': EMFObject
 const cache: {[key:string]: any} = {};
 //catalog(kilos, "kilos" , "lambda-function-metrics", "Kilograms", {'functionVersion': $LATEST, 'testDimension': derp});
-export async function catalog(trackedVariable: any, metricName: string , metricNamespace: string, metricUnitLabel: string = "None", CustomerDefinedDimension: {[key:string]: string}={}, resolution: 1 | 60=60, deploy: boolean = false): Promise<void>{
+export async function catalog(trackedVariable: number | Array<number>, metricName: string , metricNamespace: string, metricUnitLabel: string = "None", CustomerDefinedDimension: {[key:string]: string}={}, resolution: 1 | 60=60, deploy: boolean = false): Promise<void>{
   //Check for any errors & validate inputs based on documentations
+    if(!cache) throw new Error("cache is not found, please import cache from cat-a-log");
+    if(Array.isArray(trackedVariable)){
+      if(trackedVariable.length > 100) throw new Error("metric value cannot have more than 100 elements")
+    } 
+    if(Object.keys(CustomerDefinedDimension).length > 30){
+      throw new Error("EMF has a limit of 30 user defined dimensions per log");
+    }
+    //sort customerDimensions key values in alphabetical order
+    const sortedDimensions: {[key:string]: string} = {};
+    for(let i = 0; i < Object.keys(CustomerDefinedDimension).sort().length; i++){
+      sortedDimensions[Object.keys(CustomerDefinedDimension).sort()[i]] = CustomerDefinedDimension[Object.keys(CustomerDefinedDimension).sort()[i]];
+    }
     //if Object with Namespace and Dimensions already exists in Set
-    let check = cache[`${metricNamespace}${Object.keys(CustomerDefinedDimension).sort()}`];
+    let check = cache[`${metricNamespace}${sortedDimensions}`];
     if(check != undefined){
       //push the metrics object to Metrics array
-      check["_aws"]["CloudWatchMetrics"][0]["Metrics"].push({
+      cache[`${metricNamespace}${sortedDimensions}`]["_aws"]["CloudWatchMetrics"][0]["Metrics"].push({
           Name: metricName,
           Unit: metricUnitLabel,
           StorageResolution: resolution,
@@ -21,14 +33,14 @@ export async function catalog(trackedVariable: any, metricName: string , metricN
       check[`${metricName}`] = trackedVariable;
     }else{
       //create new Structured Log and add it to cachedStructuredLogs
-      check = 
+      cache[`${metricNamespace}${sortedDimensions}`] = 
         Object.assign({
         _aws: {
           Timestamp: Date.now(),
           CloudWatchMetrics: [
             {
               Namespace: metricNamespace,
-              Dimensions: [Object.keys(CustomerDefinedDimension)],
+              Dimensions: [Object.keys(sortedDimensions)],
               Metrics: [
                 {
                   Name: metricName,
