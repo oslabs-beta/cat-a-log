@@ -8,7 +8,7 @@ let cache: {[key:string]: any} = {};
 export async function catalog(trackedVariable: any, metricName: string , metricNamespace: string, metricUnitLabel: string = "None", CustomerDefinedDimension: {[key:string]: string}={}, resolution: 1 | 60=60, deploy: boolean = false): Promise<void>{
   //Check for any errors & validate inputs based on documentations
     //if Object with Namespace and Dimensions already exists in Set
-    let check = cache[`${metricNamespace}${Object.keys(CustomerDefinedDimension).sort((a: number,b: number) => a-b)}`];
+    let check = cache[`${metricNamespace}${Object.keys(CustomerDefinedDimension).sort((a,b) => a-b)}`];
     if(check != undefined){
       //push the metrics object to Metrics array
       check["_aws"]["CloudWatchMetrics"][0]["Metrics"].push({
