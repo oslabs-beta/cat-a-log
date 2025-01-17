@@ -53,7 +53,7 @@ export async function catalog(trackedVariable: number | Array<number>, metricNam
         },
         [`${metricName}`]: trackedVariable,
         }, 
-          CustomerDefinedDimension
+          sortedDimensions
         )
     }
 
