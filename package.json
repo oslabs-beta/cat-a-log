@@ -7,7 +7,7 @@
     "catalog": "./bin/catalogExe.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "server": "nodemon ./server/server.js",
     "start": "webpack serve",
     "dev": "concurrently \"cross-env NODE_ENV=development webpack-dev-server --open --hot --progress --color \" \"nodemon ./server/server.js\""
@@ -22,6 +22,7 @@
     "@babel/preset-env": "^7.25.8",
     "@babel/preset-react": "^7.25.7",
     "@babel/runtime": "^7.25.7",
+    "@types/jest": "^29.5.14",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^9.2.1",
     "concurrently": "^9.0.1",
@@ -38,8 +39,9 @@
     "sass-loader": "^16.0.2",
     "style-loader": "^4.0.0",
     "tailwindcss": "^3.4.15",
+    "ts-jest": "^29.2.5",
     "ts-loader": "^9.5.1",
-    "typescript": "^5.7.2",
+    "typescript": "^5.7.3",
     "webpack": "^5.95.0",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.1.0"
