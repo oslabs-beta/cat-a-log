@@ -1,6 +1,38 @@
 import { Logger } from '@aws-lambda-powertools/logger';
 import { LogItemExtraInput } from '@aws-lambda-powertools/logger/lib/cjs/types/Logger';
 
+
+//importing winston to configure/ structure EC2 Logs 
+import { createLogger, format, transports } from 'winston';
+import WinstonCloudWatch from 'winston-cloudwatch';
+//Require dotenv??
+// import 'dotenv/config';
+// require('dotenv').config()
+
+// Attempting to configure logger with winston
+const winstonlogger = createLogger({
+  level: 'info',
+  format: format.json(),
+  transports: [
+    new transports.Console(),
+    new WinstonCloudWatch({
+      logGroupName: 'ec2-logs', // CloudWatch Log Group
+      logStreamName: 'ec2-log-stream', // CloudWatch Log Stream
+      awsOptions: {
+        credentials: {
+          //TODO May need to convert below to process.env?? 
+          accessKeyId: 'ASIAUQ4L24SMCA2TY7UL',
+          secretAccessKey: 'AQue+2F3MYdX/2E67QkQ507Gaj1BiNep/6jFIjvp',
+        },
+        region:'us-east-2a',
+      },
+    }),
+  ],
+});
+
+
+
+
 const logger = new Logger({ serviceName: 'serverlessAirline' });
 
 //cache entries are structured thusly: 'Namespace + Dimensions(Alphabetically)': EMFObject
@@ -71,7 +103,8 @@ export async function catalog(trackedVariable: number | Array<number>, metricNam
 
 export default {
   cache,
-  catalog
+  catalog,
+  winstonlogger
 }
 
 

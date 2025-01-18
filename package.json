@@ -49,6 +49,7 @@
   "dependencies": {
     "@aws-lambda-powertools/logger": "^2.11.0",
     "@aws-lambda-powertools/metrics": "^2.11.0",
+    "@aws-sdk/client-cloudwatch-logs": "^3.731.1",
     "@aws-sdk/client-rds": "^3.709.0",
     "@testing-library/jest-dom": "^6.6.2",
     "@testing-library/react": "^16.0.1",
@@ -63,6 +64,8 @@
     "lambda-log": "^3.1.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.27.0"
+    "react-router-dom": "^6.27.0",
+    "winston": "^3.17.0",
+    "winston-cloudwatch": "^6.3.0"
   }
 }
