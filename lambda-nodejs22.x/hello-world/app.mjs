@@ -205,6 +205,20 @@ async function catalog(
     // If it passes then add to cache object
     cache[`${metricNamespace}${JSON.stringify(sortedDimensions)}`]= newEmfLog;
   }
+
+  if (deploy) {
+    //after last catalog function is invoked, send all cached logs with logger at once
+    for (let i = 0; i < Object.keys(cache).length; i++) {
+      logger.info(
+        `Your EMF compliant Structured Metrics Log ${i + 1}`,
+        cache[Object.keys(cache)[i]]
+      );
+    }
+    //clear cache
+    console.log(cache);
+    for (var member in cache) delete cache[member];
+    console.log(cache);
+  }
 }
 
 export const lambdaHandler = async (event, context) => {
@@ -216,7 +230,7 @@ export const lambdaHandler = async (event, context) => {
   };
   let kilos = 70;
   let pounds = 34;
-  catalog(pounds, 'poundsTest', 'lambda-junction-metrics2', 'lbs', {
+  catalog(pounds, 'poundsTest', 'lambda-junction-metrics2', 'None', {
     functionVersion: '$LATEST',
     testDimension: 'berp',
   });
@@ -228,7 +242,7 @@ export const lambdaHandler = async (event, context) => {
     kilos,
     'Weight',
     'lambda-junction-metrics2',
-    'Kilograms',
+    'None',
     { functionVersion: '$LATEST', testDimension: 'berp' },
     60,
     true
