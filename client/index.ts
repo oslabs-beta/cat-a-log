@@ -3,37 +3,38 @@ import { LogItemExtraInput } from '@aws-lambda-powertools/logger/lib/cjs/types/L
 
 const logger = new Logger({ serviceName: 'serverlessAirline' });
 
-//cache entries are structured thusly: 'Namespace + Dimensions(Alphabetically)': EMFObject
+//cache entries are structured thusly: 'Namespace + Dimensions(Alphabetically)': Object = {}
 const cache: {[key:string]: any} = {};
 //catalog(kilos, "kilos" , "lambda-function-metrics", "Kilograms", {'functionVersion': $LATEST, 'testDimension': derp});
 export async function catalog(trackedVariable: number | Array<number>, metricName: string , metricNamespace: string, metricUnitLabel: string = "None", CustomerDefinedDimension: {[key:string]: string}={}, resolution: 1 | 60=60, deploy: boolean = false): Promise<void>{
   //Check for any errors & validate inputs based on documentations
     if(!cache) throw new Error("cache is not found, please import cache from cat-a-log");
     if(Array.isArray(trackedVariable)){
-      if(trackedVariable.length > 100) throw new Error("metric value cannot have more than 100 elements")
+      if(trackedVariable.length > 100) throw new Error("metric value cannot have more than 100 elements");
     } 
     if(Object.keys(CustomerDefinedDimension).length > 30){
       throw new Error("EMF has a limit of 30 user defined dimensions per log");
     }
+
     //sort customerDimensions key values in alphabetical order
     const sortedDimensions: {[key:string]: string} = {};
     for(let i = 0; i < Object.keys(CustomerDefinedDimension).sort().length; i++){
       sortedDimensions[Object.keys(CustomerDefinedDimension).sort()[i]] = CustomerDefinedDimension[Object.keys(CustomerDefinedDimension).sort()[i]];
     }
-    //if Object with Namespace and Dimensions already exists in Set
-    let check = cache[`${metricNamespace}${sortedDimensions}`];
-    if(check != undefined){
+    //if Object with Namespace and Dimensions already exists in cache
+    // if value/check is defined
+    if(cache[`${metricNamespace}${JSON.stringify(sortedDimensions)}`] != undefined){
       //push the metrics object to Metrics array
-      cache[`${metricNamespace}${sortedDimensions}`]["_aws"]["CloudWatchMetrics"][0]["Metrics"].push({
+      cache[`${metricNamespace}${JSON.stringify(sortedDimensions)}`]["_aws"]["CloudWatchMetrics"][0]["Metrics"].push({
           Name: metricName,
           Unit: metricUnitLabel,
           StorageResolution: resolution,
       });
-      //add key value to Log
-      check[`${metricName}`] = trackedVariable;
-    }else{
-      //create new Structured Log and add it to cachedStructuredLogs
-      cache[`${metricNamespace}${sortedDimensions}`] = 
+      //add key value to Root Log
+      cache[`${metricNamespace}${JSON.stringify(sortedDimensions)}`][`${metricName}`] = trackedVariable;
+    }else{ //if value at check doesn't exist/undefined
+      //create new Structured Log and add it to cached Structured Logs
+      cache[`${metricNamespace}${JSON.stringify(sortedDimensions)}`] = 
         Object.assign({
         _aws: {
           Timestamp: Date.now(),
@@ -53,7 +54,7 @@ export async function catalog(trackedVariable: number | Array<number>, metricNam
         },
         [`${metricName}`]: trackedVariable,
         }, 
-          sortedDimensions
+          CustomerDefinedDimension
         )
     }
 
@@ -73,7 +74,6 @@ export default {
   cache,
   catalog
 }
-
 
 /*Current Working logger invocation
 logger.info("Your EMF compliant Structured Metrics Log",

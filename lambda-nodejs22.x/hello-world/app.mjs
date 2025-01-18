@@ -85,6 +85,7 @@ export const lambdaHandler = async (event, context) => {
     let pounds = 34;
     catalog(pounds, "poundsTest" , "lambda-junction-metrics2", "lbs", {'functionVersion': "$LATEST", 'testDimension': "berp"});
     catalog(60, "cacheTest", "lambda-junction-metrics2", "Count", {'testDimension': "berp", 'functionVersion': "$LATEST"});
+    catalog(60, "OldWeight", "lambda-junction-metrics2", "Count", {'testDimension': "kerp", 'functionVersion': "$OLDEST"});
     catalog(kilos, "Weight" , "lambda-junction-metrics2", "Kilograms", {'functionVersion': "$LATEST", 'testDimension': "berp"}, 60, true);
     //catalog(pounds, "testLogger2" , "lambda-function-metrics", Milliseconds, {'functionVersion': $LATEST, 'testDimension': derp});
 
