@@ -5,9 +5,9 @@ import { LogItemExtraInput } from '@aws-lambda-powertools/logger/lib/cjs/types/L
 //importing winston to configure/ structure EC2 Logs 
 import { createLogger, format, transports } from 'winston';
 import WinstonCloudWatch from 'winston-cloudwatch';
-//Require dotenv??
-// import 'dotenv/config';
-// require('dotenv').config()
+import dotenv from 'dotenv'; // Import the dotenv module 
+dotenv.config(); 
+
 
 // Attempting to configure logger with winston
 const winstonlogger = createLogger({
@@ -21,8 +21,8 @@ const winstonlogger = createLogger({
       awsOptions: {
         credentials: {
           //TODO May need to convert below to process.env?? 
-          accessKeyId: 'ASIAUQ4L24SMCA2TY7UL',
-          secretAccessKey: 'AQue+2F3MYdX/2E67QkQ507Gaj1BiNep/6jFIjvp',
+          accessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
+          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
         },
         region:'us-east-2a',
       },
