@@ -1,4 +1,5 @@
-import { catalog, cache } from '../client/index.ts';
+import cache from '../client/index.ts';
+import { catalog } from '../client/index.ts';
 import Ajv from 'ajv';
 
 const ajv = new Ajv();
@@ -107,7 +108,7 @@ const emfSchema = {
 
 const validateEmf = ajv.compile(emfSchema);
 
-describe('Catalog function EMF validation'),
+describe('Catalog function EMF validation',
   () => {
     it('should build valid EMF logs matching EMF schema', () => {
       let testMetric1 = 115;
@@ -129,7 +130,17 @@ describe('Catalog function EMF validation'),
       // capture values from cache
       const cachedValues = Object.values(cache);
       for(const cachedValue of cachedValues) {
-        const isValid = 
+        const isValid = validateEmf(cachedValue);
+        expect(isValid).toBe(true);
+        if (!isValid) {
+          console.error(validateEmf.errors)
+          throw new Error("Supplied/Proposed structured log does not comply with EMF schema")
+        }
       }
     });
-  };
+    it("should throw an error - doesn't match EMF schema", () => {
+      return expect(catalog(75, "testingMetric2", "lambda-junction-metrics2", "invalidUnit", {testDimension1: 'KPIs', functionVersion: '$LATEST'})).rejects.toThrow("Supplied/Proposed structured log does not comply with EMF schema");
+      });
+      // await expect(catalog(75, "testingMetric2", "lambda-junction-metrics2", "invalidUnit", {testDimension1: 'KPIs', functionVersion: '$LATEST'})).rejects.toThrowError("Supplied log failed to comply with EMF schema spec");
+      // });
+  });
