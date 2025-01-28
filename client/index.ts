@@ -188,7 +188,7 @@ const validateEmf = ajv.compile(emfSchema);
     const isValid = validateEmf(newEmfLog);
     // if it fails validation throw error
     if(!isValid) {
-      console.error("EMF validation failed", validateEmf.errors);
+      console.error("EMF validation failed: ", validateEmf.errors);
       throw new Error("Supplied/Proposed structured log does not comply with EMF schema")
     }
     // If it passes then add to cache object
