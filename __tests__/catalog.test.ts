@@ -196,8 +196,10 @@ describe('Catalog function EMF validation', () => {
   });
   it("should throw an error - doesn't match EMF schema", () => {
     // mock console.error to prevent error message from displaying in this EMF validation failure test
+    // store original console.error function for restoring after this test case
     const originalConsoleError = console.error;
-    console.error = jest.fn(); // mocking console.error
+    // mocking console.error w/ a mock function that does nothing
+    console.error = jest.fn(); 
     return expect(
       catalog(75, 'testingMetric2', 'lambda-junction-metrics2', 'invalidUnit', {
         testDimension1: 'KPIs',
@@ -208,7 +210,8 @@ describe('Catalog function EMF validation', () => {
         'Supplied/Proposed structured log does not comply with EMF schema'
       )
       .finally(() => {
-        console.error = originalConsoleError; // restoring console.error
+        // restore console.error back to original state for any future following tests
+        console.error = originalConsoleError; 
       });
   });
   // await expect(catalog(75, "testingMetric2", "lambda-junction-metrics2", "invalidUnit", {testDimension1: 'KPIs', functionVersion: '$LATEST'})).rejects.toThrowError("Supplied log failed to comply with EMF schema spec");
