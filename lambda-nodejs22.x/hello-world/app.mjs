@@ -14,9 +14,33 @@
 import { Logger } from '@aws-lambda-powertools/logger';
 const logger = new Logger({ serviceName: 'serverlessAirline' });
 import Ajv from 'ajv';
-// import catalog from "client/index.ts";
+// import {catalog, cache} from "nameOfNPMPackage/catalog";
 
-// Ajv instance
+
+const cache = {};
+async function catalog(
+  trackedVariable,
+  metricName,
+  metricNamespace,
+  metricUnitLabel,
+  CustomerDefinedDimension = {},
+  resolution = 60,
+  deploy = false
+) {
+  //Check for any errors & validate inputs based on documentations
+  if (!cache)
+    throw new Error('cache is not found, please import cache from cat-a-log');
+  if (Array.isArray(trackedVariable)) {
+    if (trackedVariable.length > 100)
+      throw new Error('metric value cannot have more than 100 elements');
+  }
+  if (Object.keys(CustomerDefinedDimension).length > 30) {
+    throw new Error(
+      'EMF has a limit of 30 user defined dimension keys per log'
+    );
+  }
+
+  // Ajv instance
 const ajv = new Ajv();
 // from AWS: EMF schema to test/validate against
 const emfSchema = {
@@ -122,29 +146,6 @@ const emfSchema = {
 };
 
 const validateEmf = ajv.compile(emfSchema);
-
-const cache = {};
-async function catalog(
-  trackedVariable,
-  metricName,
-  metricNamespace,
-  metricUnitLabel,
-  CustomerDefinedDimension = {},
-  resolution = 60,
-  deploy = false
-) {
-  //Check for any errors & validate inputs based on documentations
-  if (!cache)
-    throw new Error('cache is not found, please import cache from cat-a-log');
-  if (Array.isArray(trackedVariable)) {
-    if (trackedVariable.length > 100)
-      throw new Error('metric value cannot have more than 100 elements');
-  }
-  if (Object.keys(CustomerDefinedDimension).length > 30) {
-    throw new Error(
-      'EMF has a limit of 30 user defined dimension keys per log'
-    );
-  }
   //sort customerDimensions key values in alphabetical order
   const sortedDimensions = {};
   for (
@@ -215,9 +216,9 @@ async function catalog(
       );
     }
     //clear cache
-    console.log(cache);
+    console.log("BEFORE:", cache);
     for (var member in cache) delete cache[member];
-    console.log(cache);
+    console.log("AFTER:", cache);
   }
 }
 
@@ -228,13 +229,14 @@ export const lambdaHandler = async (event, context) => {
       message: 'hello world',
     }),
   };
-  let kilos = 70;
-  let pounds = 34;
+  let kilos = Math.ceil(Math.random()*70);
+  let pounds = Math.ceil(Math.random()*35);
+  let grams = Math.ceil(Math.random()*20);
   catalog(pounds, 'poundsTest', 'lambda-junction-metrics2', 'None', {
     functionVersion: '$LATEST',
     testDimension: 'berp',
   });
-  catalog(60, 'cacheTest', 'lambda-junction-metrics2', 'Count', {
+  catalog(grams, 'randomTest', 'lambda-junction-metrics2', 'Count', {
     testDimension: 'berp',
     functionVersion: '$LATEST',
   });
