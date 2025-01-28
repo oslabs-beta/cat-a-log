@@ -2,11 +2,37 @@ import { Logger } from '@aws-lambda-powertools/logger';
 import { LogItemExtraInput } from '@aws-lambda-powertools/logger/lib/cjs/types/Logger';
 import Ajv from 'ajv';
 
-const logger = new Logger({ serviceName: 'serverlessAirline' });
-// Ajv instance
-const ajv = new Ajv();
-// from AWS: EMF schema to test/validate against
-const emfSchema = {
+
+
+//cache entries are structured thusly: 'Namespace + Dimensions(Alphabetically)': EMFObject
+const cache: { [key: string]: any } = {};
+//catalog(kilos, "kilos" , "lambda-function-metrics", "Kilograms", {'functionVersion': $LATEST, 'testDimension': derp});
+export async function catalog(
+  trackedVariable: number | Array<number>,
+  metricName: string,
+  metricNamespace: string,
+  metricUnitLabel: string = 'None',
+  CustomerDefinedDimension: { [key: string]: string } = {},
+  resolution: 1 | 60 = 60,
+  deploy: boolean = false
+): Promise<void> {
+  //Check for any errors & validate inputs based on documentations
+  if (!cache)
+    throw new Error('cache is not found, please import cache from cat-a-log');
+  if (Array.isArray(trackedVariable)) {
+    if (trackedVariable.length > 100)
+      throw new Error('metric value cannot have more than 100 elements');
+  }
+  if (Object.keys(CustomerDefinedDimension).length > 30) {
+    throw new Error(
+      'EMF has a limit of 30 user defined dimension keys per log'
+    );
+  }
+  const logger = new Logger({ serviceName: 'serverlessAirline' });
+  // Ajv instance
+  const ajv = new Ajv();
+  // from AWS: EMF schema to test/validate against
+  const emfSchema = {
   type: 'object',
   title: 'Root Node',
   required: ['_aws'],
@@ -106,34 +132,9 @@ const emfSchema = {
       },
     },
   },
-};
+  };
 
 const validateEmf = ajv.compile(emfSchema);
-
-//cache entries are structured thusly: 'Namespace + Dimensions(Alphabetically)': EMFObject
-const cache: { [key: string]: any } = {};
-//catalog(kilos, "kilos" , "lambda-function-metrics", "Kilograms", {'functionVersion': $LATEST, 'testDimension': derp});
-export async function catalog(
-  trackedVariable: number | Array<number>,
-  metricName: string,
-  metricNamespace: string,
-  metricUnitLabel: string = 'None',
-  CustomerDefinedDimension: { [key: string]: string } = {},
-  resolution: 1 | 60 = 60,
-  deploy: boolean = false
-): Promise<void> {
-  //Check for any errors & validate inputs based on documentations
-  if (!cache)
-    throw new Error('cache is not found, please import cache from cat-a-log');
-  if (Array.isArray(trackedVariable)) {
-    if (trackedVariable.length > 100)
-      throw new Error('metric value cannot have more than 100 elements');
-  }
-  if (Object.keys(CustomerDefinedDimension).length > 30) {
-    throw new Error(
-      'EMF has a limit of 30 user defined dimension keys per log'
-    );
-  }
   //sort customerDimensions key values in alphabetical order
   const sortedDimensions: { [key: string]: string } = {};
   for (
