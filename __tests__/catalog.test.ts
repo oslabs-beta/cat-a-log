@@ -131,48 +131,85 @@ describe('Catalog function EMF validation', () => {
     // console.log("cache = ", cache);
     // console.log('cachedValues =', cachedValues)
     const awsObjects = Object.values(Object.values(cache)[0]);
-    console.log("Final cache structure: ", JSON.stringify(cache, null, 2));
+    console.log('Final cache structure: ', JSON.stringify(cache, null, 2));
     console.log('awsObjects =', awsObjects);
 
     for (const awsObject of awsObjects) {
-
       const testMetric = awsObject._aws.CloudWatchMetrics[0].Metrics[0];
-      console.log("Metric to validate: ", JSON.stringify(testMetric, null, 2));
-      const isValidMetric = validateEmf({ _aws: { Timestamp: awsObject._aws.Timestamp, CloudWatchMetrics: [{ Namespace: awsObject._aws.CloudWatchMetrics[0].Namespace, Dimensions: awsObject._aws.CloudWatchMetrics[0].Dimensions, Metrics: [testMetric] }] } });
-      console.log("Isolated metric validation result: ", isValidMetric, validateEmf.errors);
-
+      console.log('Metric to validate: ', JSON.stringify(testMetric, null, 2));
+      const isValidMetric = validateEmf({
+        _aws: {
+          Timestamp: awsObject._aws.Timestamp,
+          CloudWatchMetrics: [
+            {
+              Namespace: awsObject._aws.CloudWatchMetrics[0].Namespace,
+              Dimensions: awsObject._aws.CloudWatchMetrics[0].Dimensions,
+              Metrics: [testMetric],
+            },
+          ],
+        },
+      });
+      console.log(
+        'Isolated metric validation result: ',
+        isValidMetric,
+        validateEmf.errors
+      );
 
       console.log('awsObject= ', awsObject);
-      console.log("stringified awsObject: ", JSON.stringify(awsObject, null, 2));
-      console.log("Raw Unit value: ", awsObject._aws.CloudWatchMetrics[0].Metrics[0].Unit);
-      console.log("Trimmed Unit value: ", awsObject._aws.CloudWatchMetrics[0].Metrics[0].Unit.trim());
-      console.log("Length of Unit value: ", awsObject._aws.CloudWatchMetrics[0].Metrics[0].Unit.length);
-
+      console.log(
+        'stringified awsObject: ',
+        JSON.stringify(awsObject, null, 2)
+      );
+      console.log(
+        'Raw Unit value: ',
+        awsObject._aws.CloudWatchMetrics[0].Metrics[0].Unit
+      );
+      console.log(
+        'Trimmed Unit value: ',
+        awsObject._aws.CloudWatchMetrics[0].Metrics[0].Unit.trim()
+      );
+      console.log(
+        'Length of Unit value: ',
+        awsObject._aws.CloudWatchMetrics[0].Metrics[0].Unit.length
+      );
 
       // const isValid = validateEmf(awsObject);
       const isValid = validateEmf(awsObject);
-      console.log('isValid result followed by validateEmf.errors result: ', isValid, validateEmf.errors);
+      console.log(
+        'isValid result followed by validateEmf.errors result: ',
+        isValid,
+        validateEmf.errors
+      );
       console.log('isValid = ', isValid, typeof isValid);
       expect(isValid).toBe(true);
-    //   if (!isValid) {
-    //     console.error('validation error', validateEmf.errors);
-    //     throw new Error(
-    //       'Supplied/Proposed structured log does not comply with EMF schema'
-    //     );
-    //   } else {
-    //     console.log('EMF Validation passed!');
-    //   }
+      if (!isValid) {
+        console.error('catalog.test.ts - validation error', validateEmf.errors);
+        console.log('catalog.test.ts - entering if block');
+        throw new Error(
+          'Supplied/Proposed structured log does not comply with EMF schema'
+        );
+      } else {
+        console.log('catalog.test.ts - entering else block');
+        console.log('catalog.test.ts - EMF Validation passed!');
+      }
     }
   });
   it("should throw an error - doesn't match EMF schema", () => {
+    // mock console.error to prevent error message from displaying in this EMF validation failure test
+    const originalConsoleError = console.error;
+    console.error = jest.fn(); // mocking console.error
     return expect(
       catalog(75, 'testingMetric2', 'lambda-junction-metrics2', 'invalidUnit', {
         testDimension1: 'KPIs',
         functionVersion: '$LATEST',
       })
-    ).rejects.toThrow(
-      'Supplied/Proposed structured log does not comply with EMF schema'
-    );
+    )
+      .rejects.toThrow(
+        'Supplied/Proposed structured log does not comply with EMF schema'
+      )
+      .finally(() => {
+        console.error = originalConsoleError; // restoring console.error
+      });
   });
   // await expect(catalog(75, "testingMetric2", "lambda-junction-metrics2", "invalidUnit", {testDimension1: 'KPIs', functionVersion: '$LATEST'})).rejects.toThrowError("Supplied log failed to comply with EMF schema spec");
   // });
