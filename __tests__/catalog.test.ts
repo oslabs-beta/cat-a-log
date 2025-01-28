@@ -129,9 +129,13 @@ describe('Catalog function EMF validation',
       );
       // capture values from cache
       const cachedValues = Object.values(cache);
-      for(const cachedValue of cachedValues) {
-        const isValid = validateEmf(cachedValue);
-        expect(isValid).toBe(true);
+      for(const key in cache) {
+        const isValid = validateEmf(cache[key]);
+      expect(isValid).toBe(true);
+
+      // for(const cachedValue of cachedValues) {
+      //   const isValid = validateEmf(cachedValue);
+        // expect(isValid).toBe(true);
         if (!isValid) {
           console.error(validateEmf.errors)
           throw new Error("Supplied/Proposed structured log does not comply with EMF schema")
