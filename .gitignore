@@ -9,3 +9,7 @@ dist/
 
 # not sure what this is for.  Copied it from other units - BMA
 .vscode/
+
+# ignore coverage reports & tests
+/coverage
+__tests__

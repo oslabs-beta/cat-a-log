@@ -184,11 +184,20 @@ const validateEmf = ajv.compile(emfSchema);
       },
       CustomerDefinedDimension
     );
+
+  // Log the Unit value before validation
+  console.log('index.ts - Unit value before validation: ', newEmfLog._aws.CloudWatchMetrics[0].Metrics[0].Unit);
+
+
     // validate the new EMF JSON schema against AWS EMF JSON schema before adding to cache object
     const isValid = validateEmf(newEmfLog);
+    // //troubleshooting console.error in test
+    // console.log('index.ts - Validation result: ', isValid);  
+    // troubleshooting console.error in emf test
+    // console.log('index.ts - Validation errors: ', validateEmf.errors);
     // if it fails validation throw error
     if(!isValid) {
-      console.error("EMF validation failed", validateEmf.errors);
+      console.error("An error occurred during EMF validation: ", validateEmf.errors);  
       throw new Error("Supplied/Proposed structured log does not comply with EMF schema")
     }
     // If it passes then add to cache object
