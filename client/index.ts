@@ -204,9 +204,9 @@ const validateEmf = ajv.compile(emfSchema);
       );
     }
     //clear cache
-    console.log(cache);
+    console.log("BEFORE:", cache);
     for (var member in cache) delete cache[member];
-    console.log(cache);
+    console.log("AFTER:", cache);
   }
 }
 

@@ -22,7 +22,7 @@ async function catalog(
   trackedVariable,
   metricName,
   metricNamespace,
-  metricUnitLabel,
+  metricUnitLabel = 'None',
   CustomerDefinedDimension = {},
   resolution = 60,
   deploy = false
@@ -240,6 +240,7 @@ export const lambdaHandler = async (event, context) => {
     testDimension: 'berp',
     functionVersion: '$LATEST',
   });
+  catalog(kilos, '0Dimensions', 'lambda-junction-metrics2');
   catalog(
     kilos,
     'Weight',
@@ -249,6 +250,7 @@ export const lambdaHandler = async (event, context) => {
     60,
     true
   );
+  
   //catalog(pounds, "testLogger2" , "lambda-function-metrics", Milliseconds, {'functionVersion': $LATEST, 'testDimension': derp});
 
   //catalog(trackedVariable: var, metricName: string , metricNamespace: string, metricUnitLabel: string, CustomerDefinedDimension(s): Object {DimensionName: DimensionValue: String, ...}, ...);
