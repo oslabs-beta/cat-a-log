@@ -5,7 +5,7 @@ export default {
     preset: 'ts-jest/presets/default-esm',
     testEnvironment: 'node',
     transform: {
-      '^.+\\.ts?$': 'ts-jest',
+      '^.+\\.ts?$': ['ts-jest', { isolatedModules: true }], // changed to work for ts files
     },
     moduleFileExtensions: ['ts', 'js', 'json', 'node'],
     collectCoverage: true,
@@ -17,9 +17,10 @@ export default {
         ],
         // Following required for compatibility with ES vs CommonJS
         extensionsToTreatAsEsm: ['.ts'],
-        globals: {
-          'ts-jest': {
-            useESM: true,
-          },
-        },
+        // below is commented out to get rid of deprecated waring of jest
+        // globals: { 
+        //   'ts-jest': {
+        //     useESM: true,
+        //   },
+        // },
   };
