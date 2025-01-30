@@ -30,6 +30,9 @@ async function catalog(
   //Check for any errors & validate inputs based on documentations
   if (!cache)
     throw new Error('cache is not found, please import cache from cat-a-log');
+
+  if(Object.keys(CustomerDefinedDimension).concat([metricName]).filter((el) => el === "level" || "message" || "sampling_rate" || "service" || "timestamp" || "xray_trace_id").length > 0) throw new Error("metricName, or Dimension names cannot be the same as native logger keys")
+
   if (Array.isArray(trackedVariable)) {
     if (trackedVariable.length > 100)
       throw new Error('metric value cannot have more than 100 elements');
@@ -241,6 +244,7 @@ export const lambdaHandler = async (event, context) => {
     functionVersion: '$LATEST',
   });
   catalog(kilos, '0Dimensions', 'lambda-junction-metrics2');
+  // catalog(kilos, 'level', 'lambda-junction-metrics2');
   catalog(
     kilos,
     'Weight',
