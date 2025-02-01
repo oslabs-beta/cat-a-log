@@ -14,9 +14,10 @@
 import { Logger } from '@aws-lambda-powertools/logger';
 const logger = new Logger({ serviceName: 'serverlessAirline' });
 import Ajv from 'ajv';
-// import {catalog, cache} from "nameOfNPMPackage/catalog";
+import cache from "cat-a-logs/client/index.ts";
+import catalog from "cat-a-logs/client/index.ts";
 
-
+/*
 const cache = {};
 async function catalog(
   trackedVariable,
@@ -31,7 +32,7 @@ async function catalog(
   if (!cache)
     throw new Error('cache is not found, please import cache from cat-a-log');
 
-  if(Object.keys(CustomerDefinedDimension).concat([metricName]).filter((el) => el === "level" || "message" || "sampling_rate" || "service" || "timestamp" || "xray_trace_id").length > 0) throw new Error("metricName, or Dimension names cannot be the same as native logger keys")
+  if(Object.keys(CustomerDefinedDimension).concat([metricName]).filter((el) => el === "level" || "message" || "sampling_rate" || "service" || "timestamp" || "xray_trace_id").length > 0) throw new Error("metricName, or Dimension names cannot be the same as native logger keys level || message || sampling_rate || service || timestamp || xray_trace_id");
 
   if (Array.isArray(trackedVariable)) {
     if (trackedVariable.length > 100)
@@ -224,7 +225,7 @@ const validateEmf = ajv.compile(emfSchema);
     console.log("AFTER:", cache);
   }
 }
-
+*/
 export const lambdaHandler = async (event, context) => {
   const response = {
     statusCode: 200,
@@ -243,7 +244,6 @@ export const lambdaHandler = async (event, context) => {
     testDimension: 'berp',
     functionVersion: '$LATEST',
   });
-  catalog(kilos, '0Dimensions', 'lambda-junction-metrics2');
   // catalog(kilos, 'level', 'lambda-junction-metrics2');
   catalog(
     kilos,
