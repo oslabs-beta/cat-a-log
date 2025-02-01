@@ -13,3 +13,4 @@ dist/
 # ignore coverage reports & tests
 /coverage
 __tests__
+logs
