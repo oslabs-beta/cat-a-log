@@ -14,8 +14,8 @@
 import { Logger } from '@aws-lambda-powertools/logger';
 const logger = new Logger({ serviceName: 'serverlessAirline' });
 import Ajv from 'ajv';
-import cache from "cat-a-logs/client/index.ts";
-import catalog from "cat-a-logs/client/index.ts";
+import cache from "cat-a-logs/index";
+import catalog from "cat-a-logs/index";
 
 /*
 const cache = {};
