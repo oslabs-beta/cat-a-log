@@ -235,10 +235,12 @@ function catalog(trackedVariable_1, metricName_1, metricNamespace_1) {
 }
 export const catalog = catalog;
 export const cache = cache;
-// exports.default = {
-//     cache: cache,
-//     catalog: catalog,
-// };
+/*
+exports.default = {
+    cache: cache,
+    catalog: catalog,
+};
+/*
 /*Current Working logger invocation
 logger.info("Your EMF compliant Structured Metrics Log",
   Object.assign({

@@ -3,11 +3,8 @@
   "version": "1.0.8",
   "description": "Create & send structured logs to AWS Cloudwatch logs",
   "main": "index.js",
-  "bin": {
-    "catalog": "./bin/catalogExe.js"
-  },
   "exports":{
-    "./index": "./client/index.js"
+    "./index.js": "./client/index.js"
   },
   "scripts": {
     "test": "jest",
