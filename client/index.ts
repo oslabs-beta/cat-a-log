@@ -7,7 +7,7 @@ import Ajv from 'ajv';
 //cache entries are structured thusly: 'Namespace + Dimensions(Alphabetically)': EMFObject
 const cache: { [key: string]: any } = {};
 //catalog(kilos, "kilos" , "lambda-function-metrics", "Kilograms", {'functionVersion': $LATEST, 'testDimension': derp});
-export async function catalog(
+async function catalog(
   trackedVariable: number | Array<number>,
   metricName: string,
   metricNamespace: string,

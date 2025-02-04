@@ -36,7 +36,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.catalog = catalog;
 var logger_1 = require("@aws-lambda-powertools/logger");
 var ajv_1 = require("ajv");
 //cache entries are structured thusly: 'Namespace + Dimensions(Alphabetically)': EMFObject
@@ -233,14 +232,10 @@ function catalog(trackedVariable_1, metricName_1, metricNamespace_1) {
         });
     });
 }
-export const catalog = catalog;
-export const cache = cache;
-/*
 exports.default = {
     cache: cache,
     catalog: catalog,
 };
-/*
 /*Current Working logger invocation
 logger.info("Your EMF compliant Structured Metrics Log",
   Object.assign({
