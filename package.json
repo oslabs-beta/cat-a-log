@@ -1,6 +1,6 @@
 {
   "name": "cat-a-logs",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "description": "Create & send structured logs to AWS Cloudwatch logs",
   "main": "index.js",
   "exports":{
