@@ -232,11 +232,11 @@ function catalog(trackedVariable_1, metricName_1, metricNamespace_1) {
         });
     });
 }
-
-exports.default = {
-    "cache": cache,
-    "catalog": catalog,
-};
+export default {cache, catalog};
+// exports.default = {
+//     "cache": cache,
+//     "catalog": catalog,
+// };
 /*Current Working logger invocation
 logger.info("Your EMF compliant Structured Metrics Log",
   Object.assign({
