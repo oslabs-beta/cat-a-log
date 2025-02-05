@@ -36,10 +36,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.cache = void 0;
+exports.catalog = catalog;
 var logger_1 = require("@aws-lambda-powertools/logger");
 var ajv_1 = require("ajv");
 //cache entries are structured thusly: 'Namespace + Dimensions(Alphabetically)': EMFObject
 var cache = {};
+exports.cache = cache;
 //catalog(kilos, "kilos" , "lambda-function-metrics", "Kilograms", {'functionVersion': $LATEST, 'testDimension': derp});
 function catalog(trackedVariable_1, metricName_1, metricNamespace_1) {
     return __awaiter(this, arguments, void 0, function (trackedVariable, metricName, metricNamespace, metricUnitLabel, CustomerDefinedDimension, resolution, deploy) {
@@ -232,11 +235,6 @@ function catalog(trackedVariable_1, metricName_1, metricNamespace_1) {
         });
     });
 }
-export {cache, catalog};
-// exports.default = {
-//     "cache": cache,
-//     "catalog": catalog,
-// };
 /*Current Working logger invocation
 logger.info("Your EMF compliant Structured Metrics Log",
   Object.assign({
