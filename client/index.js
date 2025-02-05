@@ -41,8 +41,7 @@ exports.catalog = catalog;
 var logger_1 = require("@aws-lambda-powertools/logger");
 var ajv_1 = require("ajv");
 //cache entries are structured thusly: 'Namespace + Dimensions(Alphabetically)': EMFObject
-var cache = {};
-exports.cache = cache;
+exports.cache = {};
 //catalog(kilos, "kilos" , "lambda-function-metrics", "Kilograms", {'functionVersion': $LATEST, 'testDimension': derp});
 function catalog(trackedVariable_1, metricName_1, metricNamespace_1) {
     return __awaiter(this, arguments, void 0, function (trackedVariable, metricName, metricNamespace, metricUnitLabel, CustomerDefinedDimension, resolution, deploy) {
@@ -54,7 +53,7 @@ function catalog(trackedVariable_1, metricName_1, metricNamespace_1) {
         if (deploy === void 0) { deploy = false; }
         return __generator(this, function (_b) {
             //Check for any errors & validate inputs based on documentations
-            if (!cache)
+            if (!exports.cache)
                 throw new Error('cache is not found, please import cache from cat-a-log');
             if (Object.keys(CustomerDefinedDimension).concat([metricName.toLowerCase()]).filter(function (el) { return el === "level" || "message" || "sampling_rate" || "service" || "timestamp" || "xray_trace_id"; }).length > 0)
                 throw new Error("metricName, or Dimension names cannot be the same as these native logger keys: level || message || sampling_rate || service || timestamp || xray_trace_id");
@@ -173,10 +172,10 @@ function catalog(trackedVariable_1, metricName_1, metricNamespace_1) {
                 sortedDimensions[Object.keys(CustomerDefinedDimension).sort()[i]] =
                     CustomerDefinedDimension[Object.keys(CustomerDefinedDimension).sort()[i]];
             }
-            check = cache["".concat(metricNamespace).concat(sortedDimensions)];
+            check = exports.cache["".concat(metricNamespace).concat(sortedDimensions)];
             if (check != undefined) {
                 //push the metrics object to Metrics array
-                cache["".concat(metricNamespace).concat(sortedDimensions)]['_aws']['CloudWatchMetrics'][0]['Metrics'].push({
+                exports.cache["".concat(metricNamespace).concat(sortedDimensions)]['_aws']['CloudWatchMetrics'][0]['Metrics'].push({
                     Name: metricName,
                     Unit: metricUnitLabel,
                     StorageResolution: resolution,
@@ -218,18 +217,18 @@ function catalog(trackedVariable_1, metricName_1, metricNamespace_1) {
                     throw new Error("Supplied/Proposed structured log does not comply with EMF schema");
                 }
                 // If it passes then add to cache object
-                cache["".concat(metricNamespace).concat(sortedDimensions)] = newEmfLog;
+                exports.cache["".concat(metricNamespace).concat(sortedDimensions)] = newEmfLog;
             }
             if (deploy) {
                 //after last catalog function is invoked, send all cached logs with logger at once
-                for (i = 0; i < Object.keys(cache).length; i++) {
-                    logger.info("Your EMF compliant Structured Metrics Log ".concat(i + 1), cache[Object.keys(cache)[i]]);
+                for (i = 0; i < Object.keys(exports.cache).length; i++) {
+                    logger.info("Your EMF compliant Structured Metrics Log ".concat(i + 1), exports.cache[Object.keys(exports.cache)[i]]);
                 }
                 //clear cache
-                console.log("BEFORE:", cache);
-                for (member in cache)
-                    delete cache[member];
-                console.log("AFTER:", cache);
+                console.log("BEFORE:", exports.cache);
+                for (member in exports.cache)
+                    delete exports.cache[member];
+                console.log("AFTER:", exports.cache);
             }
             return [2 /*return*/];
         });
