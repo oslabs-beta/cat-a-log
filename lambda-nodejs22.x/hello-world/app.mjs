@@ -14,8 +14,7 @@
 import { Logger } from '@aws-lambda-powertools/logger';
 const logger = new Logger({ serviceName: 'serverlessAirline' });
 import Ajv from 'ajv';
-// import {cache} from "cat-a-logs/index";
-import {cache, catalog} from "cat-a-logs/index.js";
+import catalog from "cat-a-logs/index.js";
 
 export const lambdaHandler = async (event, context) => {
   const response = {
