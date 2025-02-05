@@ -1,6 +1,5 @@
 import { Logger } from '@aws-lambda-powertools/logger';
-import { LogItemExtraInput } from '@aws-lambda-powertools/logger/lib/cjs/types/Logger';
-import Ajv from 'ajv';
+import { Ajv } from 'ajv';
 
 
 
@@ -219,7 +218,7 @@ const validateEmf = ajv.compile(emfSchema);
     console.log("AFTER:", cache);
   }
 }
-
+// export { cache, catalog };
 
 /*Current Working logger invocation
 logger.info("Your EMF compliant Structured Metrics Log",

@@ -65,7 +65,7 @@ function catalog(trackedVariable_1, metricName_1, metricNamespace_1) {
                 throw new Error('EMF has a limit of 30 user defined dimension keys per log');
             }
             logger = new logger_1.Logger({ serviceName: 'serverlessAirline' });
-            ajv = new ajv_1.default();
+            ajv = new ajv_1.Ajv();
             emfSchema = {
                 type: 'object',
                 title: 'Root Node',
@@ -234,6 +234,7 @@ function catalog(trackedVariable_1, metricName_1, metricNamespace_1) {
         });
     });
 }
+// export { cache, catalog };
 /*Current Working logger invocation
 logger.info("Your EMF compliant Structured Metrics Log",
   Object.assign({
