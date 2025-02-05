@@ -220,7 +220,7 @@ const validateEmf = ajv.compile(emfSchema);
   }
 }
 
-export default {
+export {
   cache,
   catalog,
 };
