@@ -36,12 +36,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cache = void 0;
-exports.catalog = catalog;
 var logger_1 = require("@aws-lambda-powertools/logger");
 var ajv_1 = require("ajv");
 //cache entries are structured thusly: 'Namespace + Dimensions(Alphabetically)': EMFObject
-exports.cache = {};
+var cache = {};
 //catalog(kilos, "kilos" , "lambda-function-metrics", "Kilograms", {'functionVersion': $LATEST, 'testDimension': derp});
 function catalog(trackedVariable_1, metricName_1, metricNamespace_1) {
     return __awaiter(this, arguments, void 0, function (trackedVariable, metricName, metricNamespace, metricUnitLabel, CustomerDefinedDimension, resolution, deploy) {
@@ -53,7 +51,7 @@ function catalog(trackedVariable_1, metricName_1, metricNamespace_1) {
         if (deploy === void 0) { deploy = false; }
         return __generator(this, function (_b) {
             //Check for any errors & validate inputs based on documentations
-            if (!exports.cache)
+            if (!cache)
                 throw new Error('cache is not found, please import cache from cat-a-log');
             if (Object.keys(CustomerDefinedDimension).concat([metricName.toLowerCase()]).filter(function (el) { return el === "level" || "message" || "sampling_rate" || "service" || "timestamp" || "xray_trace_id"; }).length > 0)
                 throw new Error("metricName, or Dimension names cannot be the same as these native logger keys: level || message || sampling_rate || service || timestamp || xray_trace_id");
@@ -172,10 +170,10 @@ function catalog(trackedVariable_1, metricName_1, metricNamespace_1) {
                 sortedDimensions[Object.keys(CustomerDefinedDimension).sort()[i]] =
                     CustomerDefinedDimension[Object.keys(CustomerDefinedDimension).sort()[i]];
             }
-            check = exports.cache["".concat(metricNamespace).concat(sortedDimensions)];
+            check = cache["".concat(metricNamespace).concat(sortedDimensions)];
             if (check != undefined) {
                 //push the metrics object to Metrics array
-                exports.cache["".concat(metricNamespace).concat(sortedDimensions)]['_aws']['CloudWatchMetrics'][0]['Metrics'].push({
+                cache["".concat(metricNamespace).concat(sortedDimensions)]['_aws']['CloudWatchMetrics'][0]['Metrics'].push({
                     Name: metricName,
                     Unit: metricUnitLabel,
                     StorageResolution: resolution,
@@ -217,24 +215,24 @@ function catalog(trackedVariable_1, metricName_1, metricNamespace_1) {
                     throw new Error("Supplied/Proposed structured log does not comply with EMF schema");
                 }
                 // If it passes then add to cache object
-                exports.cache["".concat(metricNamespace).concat(sortedDimensions)] = newEmfLog;
+                cache["".concat(metricNamespace).concat(sortedDimensions)] = newEmfLog;
             }
             if (deploy) {
                 //after last catalog function is invoked, send all cached logs with logger at once
-                for (i = 0; i < Object.keys(exports.cache).length; i++) {
-                    logger.info("Your EMF compliant Structured Metrics Log ".concat(i + 1), exports.cache[Object.keys(exports.cache)[i]]);
+                for (i = 0; i < Object.keys(cache).length; i++) {
+                    logger.info("Your EMF compliant Structured Metrics Log ".concat(i + 1), cache[Object.keys(cache)[i]]);
                 }
                 //clear cache
-                console.log("BEFORE:", exports.cache);
-                for (member in exports.cache)
-                    delete exports.cache[member];
-                console.log("AFTER:", exports.cache);
+                console.log("BEFORE:", cache);
+                for (member in cache)
+                    delete cache[member];
+                console.log("AFTER:", cache);
             }
             return [2 /*return*/];
         });
     });
 }
-// export { cache, catalog };
+exports.default = { catalog: catalog };
 /*Current Working logger invocation
 logger.info("Your EMF compliant Structured Metrics Log",
   Object.assign({
