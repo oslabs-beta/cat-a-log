@@ -4,9 +4,9 @@ import { Ajv } from 'ajv';
 
 
 //cache entries are structured thusly: 'Namespace + Dimensions(Alphabetically)': EMFObject
-export const cache: { [key: string]: any } = {};
+const cache: { [key: string]: any } = {};
 //catalog(kilos, "kilos" , "lambda-function-metrics", "Kilograms", {'functionVersion': $LATEST, 'testDimension': derp});
-export async function catalog(
+async function catalog(
   trackedVariable: number | Array<number>,
   metricName: string,
   metricNamespace: string,
@@ -218,7 +218,7 @@ const validateEmf = ajv.compile(emfSchema);
     console.log("AFTER:", cache);
   }
 }
-// export { cache, catalog };
+export default {catalog};
 
 /*Current Working logger invocation
 logger.info("Your EMF compliant Structured Metrics Log",
