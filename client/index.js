@@ -232,7 +232,7 @@ function catalog(trackedVariable_1, metricName_1, metricNamespace_1) {
         });
     });
 }
-export default {cache, catalog};
+export {cache, catalog};
 // exports.default = {
 //     "cache": cache,
 //     "catalog": catalog,
