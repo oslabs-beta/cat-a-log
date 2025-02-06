@@ -1,4 +1,4 @@
-import cache from '../client/index.ts';
+import { cache } from  '../client/index.ts';
 import { catalog } from '../client/index.ts';
 import Ajv from 'ajv';
 
@@ -130,11 +130,11 @@ describe('Catalog function EMF validation', () => {
     // const cachedValues = Object.values(cache);
     // console.log("cache = ", cache);
     // console.log('cachedValues =', cachedValues)
-    const awsObjects = Object.values(Object.values(cache)[0]);
+    const awsObjects = Object.values(Object.values(cache))[0];
     console.log('Final cache structure: ', JSON.stringify(cache, null, 2));
     console.log('awsObjects =', awsObjects);
 
-    for (const awsObject of awsObjects) {
+    for (const awsObject  of awsObjects) {
       const testMetric = awsObject._aws.CloudWatchMetrics[0].Metrics[0];
       console.log('Metric to validate: ', JSON.stringify(testMetric, null, 2));
       const isValidMetric = validateEmf({

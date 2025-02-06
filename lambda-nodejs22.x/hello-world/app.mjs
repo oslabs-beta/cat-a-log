@@ -23,9 +23,9 @@ export const lambdaHandler = async (event, context) => {
       message: 'hello world',
     }),
   };
-  let kilos =70;
-  let pounds =35;
-  let grams = 20;
+  let kilos = Math.ceil(Math.random()*70);
+  let pounds =Math.ceil(Math.random()*35);
+  let grams = Math.ceil(Math.random()*20);
   catalog(pounds, 'poundsTest', 'lambda-junction-metrics2', 'None', {
     functionVersion: '$LATEST',
     testDimension: 'berp',
