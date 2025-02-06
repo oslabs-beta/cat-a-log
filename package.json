@@ -2,9 +2,9 @@
   "name": "cat-a-log",
   "version": "1.0.0",
   "description": "Create & send structured logs to AWS Cloudwatch logs",
-  "main": "postcss.config.js",
-  "bin": {
-    "catalog": "./bin/catalogExe.js"
+  "main": "index.js",
+  "exports":{
+    "./index.js": "./client/index.js"
   },
   "scripts": {
     "test": "jest",
