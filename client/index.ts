@@ -218,7 +218,10 @@ const validateEmf = ajv.compile(emfSchema);
     console.log("AFTER:", cache);
   }
 }
-export default {catalog};
+export {
+  cache,
+  catalog
+};
 
 /*Current Working logger invocation
 logger.info("Your EMF compliant Structured Metrics Log",

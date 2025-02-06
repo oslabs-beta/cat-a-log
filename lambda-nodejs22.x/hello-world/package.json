@@ -12,7 +12,7 @@
     "@aws-lambda-powertools/metrics": "^2.11.0",
     "lambda-log": "^3.1.0",
     "ajv": "^8.17.1",
-    "cat-a-logs": "^1.2.0"
+    "cat-a-logs": "^1.2.1"
   },
   "scripts": {
     "test": "mocha tests/unit/"
