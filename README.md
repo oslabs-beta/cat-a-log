@@ -29,14 +29,16 @@ The catalog function  below takes in the following arguments - lets look at each
   deploy: boolean = false
 )`
 
-trackedVariable: This parameter allows you to caputre and track a variable of 
-metricName:
-metricNamespace:
-metricUnitLabel: Can only be the fo
-- Seconds | Microseconds | Milliseconds | Bytes | Kilobytes | Megabytes | Gigabytes | Terabytes | Bits | Kilobits | Megabits | Gigabits | Terabits | Percent | Count | Bytes/Second | Kilobytes/Second | Megabytes/Second | Gigabytes/Second | Terabytes/Second | Bits/Second | Kilobits/Second | Megabits/Second | Gigabits/Second | Terabits/Second | Count/Second | None
-CustomerDefinedDimension: 
-resolution: 
-deploy: 
+- **trackedVariable**: This is a number that is dynamic and can change with each call - these numbers are reflected 
+- **metricName**:
+- **metricNamespace**:
+- **metricUnitLabel**: Can only be the following labels:
+- Seconds | Microseconds | Milliseconds | Bytes | Kilobytes | Megabytes | Gigabytes | Terabytes | Bits | Kilobits | Megabits | Gigabits | Terabits | Percent | Count | Bytes/Second | Kilobytes/Second | Megabytes/Second | Gigabytes/Second | Terabytes/Second | Bits/Second | Kilobits/Second | Megabits/Second | Gigabits/Second | Terabits/Second | Count/Second | None\
+
+To read more about Metric Datum see this <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_MetricDatum.html" target="_blank">link</a>
+- **CustomerDefinedDimension**: 
+- **resolution**: 
+- **deploy**: 
 
 **Structure of the files:**\
 <a href="https://www.npmjs.com/package/cat-a-logs?activeTab=readme" target="_blank">Link to npm package</a>
