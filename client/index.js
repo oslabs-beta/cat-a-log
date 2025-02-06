@@ -18,15 +18,12 @@ function catalog(trackedVariable_1, metricName_1, metricNamespace_1) {
         if (!cache)
             throw new Error("cache is not found, please import cache from cat-a-log");
         console.log(Object.keys(CustomerDefinedDimension).concat([metricName.toLowerCase()]));
+        const badKeys = ["level", "message", "sampling_rate", "service", "timestamp", "xray_trace_id"];
         if (Object.keys(CustomerDefinedDimension)
             .concat([metricName.toLowerCase()])
-            .filter((el) => el === "level" ||
-            "message" ||
-            "sampling_rate" ||
-            "service" ||
-            "timestamp" ||
-            "xray_trace_id").length > 0)
+            .filter((el, i) => badKeys[i]).length > 0) {
             throw new Error("metricName, or Dimension names cannot be the same as these native logger keys: level || message || sampling_rate || service || timestamp || xray_trace_id");
+        }
         if (Array.isArray(trackedVariable)) {
             if (trackedVariable.length > 100)
                 throw new Error("metric value cannot have more than 100 elements");
