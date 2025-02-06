@@ -1,13 +1,15 @@
 # cat-a-log
-Creating AWS EMF structured logs to AWS Cloudwatch logs 
-
-**Why use cat-a-log?:**\
-Why use a washing machine when you can do them by hand? Becuase it makes your job way easier! Leveraging AWS Lambda Powertools we can use the cat-a-log function to invoke and format logs into AWS Embedded Metric Format. Then we can and publish to AWS Cloudwatch to provide engineers with automatic metric visulaization to make the process of debugging logs much more seamless.
+This function will help you create AWS Embedded Metric Format Logs and publish them to AWS Cloudwatch. EMF formatting will allow for chosen metrics to be automatically visualized in graphs for simplier debugging.
 
 **What is Embedded Metric Formatting (EMF):**\
 This is a JSON specification to communicate with Cloudwatch Logs to automatically extract values embedded in the structured log events. For more information please visit the link below 
 
 <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Embedded_Metric_Format_Specification.html" target="_blank">AWS Documentation on EMF Formatting</a>
+
+
+**Why use cat-a-log?:**\
+Why use a washing machine when you can do them by hand? Becuase it makes your job way easier! Leveraging AWS Lambda Powertools we can use the cat-a-log function to invoke and format logs into AWS Embedded Metric Format. By publishing these logs to AWS Cloudwatch, we are able to provide engineers with automatic metric visulaization to make the process of debugging logs much more efficient.
+
 
 **Structure of the files:**\
 `index.ts` is compiled to `index.js`. Important to compile `.ts` file to es6 js syntax using the `tsc —target es6 (filepath)` command
