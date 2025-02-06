@@ -7,116 +7,125 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Logger } from '@aws-lambda-powertools/logger';
-import { Ajv } from 'ajv';
+import { Logger } from "@aws-lambda-powertools/logger";
+import { Ajv } from "ajv";
 //cache entries are structured thusly: 'Namespace + Dimensions(Alphabetically)': EMFObject
 const cache = {};
 //catalog(kilos, "kilos" , "lambda-function-metrics", "Kilograms", {'functionVersion': $LATEST, 'testDimension': derp});
 function catalog(trackedVariable_1, metricName_1, metricNamespace_1) {
-    return __awaiter(this, arguments, void 0, function* (trackedVariable, metricName, metricNamespace, metricUnitLabel = 'None', CustomerDefinedDimension = {}, resolution = 60, deploy = false) {
+    return __awaiter(this, arguments, void 0, function* (trackedVariable, metricName, metricNamespace, metricUnitLabel = "None", CustomerDefinedDimension = {}, resolution = 60, deploy = false) {
         //Check for any errors & validate inputs based on documentations
         if (!cache)
-            throw new Error('cache is not found, please import cache from cat-a-log');
-        // if(Object.keys(CustomerDefinedDimension).concat([metricName.toLowerCase()]).filter((el: string) => el === "level" || "message" || "sampling_rate" || "service" || "timestamp" || "xray_trace_id").length > 0) throw new Error("metricName, or Dimension names cannot be the same as these native logger keys: level || message || sampling_rate || service || timestamp || xray_trace_id");
+            throw new Error("cache is not found, please import cache from cat-a-log");
+        console.log(Object.keys(CustomerDefinedDimension).concat([metricName.toLowerCase()]));
+        if (Object.keys(CustomerDefinedDimension)
+            .concat([metricName.toLowerCase()])
+            .filter((el) => el === "level" ||
+            "message" ||
+            "sampling_rate" ||
+            "service" ||
+            "timestamp" ||
+            "xray_trace_id").length > 0)
+            throw new Error("metricName, or Dimension names cannot be the same as these native logger keys: level || message || sampling_rate || service || timestamp || xray_trace_id");
         if (Array.isArray(trackedVariable)) {
             if (trackedVariable.length > 100)
-                throw new Error('metric value cannot have more than 100 elements');
+                throw new Error("metric value cannot have more than 100 elements");
         }
         if (Object.keys(CustomerDefinedDimension).length > 30) {
-            throw new Error('EMF has a limit of 30 user defined dimension keys per log');
+            throw new Error("EMF has a limit of 30 user defined dimension keys per log");
         }
-        const logger = new Logger({ serviceName: 'serverlessAirline' });
+        const logger = new Logger({ serviceName: "serverlessAirline" });
         // Ajv instance
         const ajv = new Ajv();
         // from AWS: EMF schema to test/validate against
         const emfSchema = {
-            type: 'object',
-            title: 'Root Node',
-            required: ['_aws'],
+            type: "object",
+            title: "Root Node",
+            required: ["_aws"],
             properties: {
                 _aws: {
-                    $id: '#/properties/_aws',
-                    type: 'object',
-                    title: 'Metadata',
-                    required: ['Timestamp', 'CloudWatchMetrics'],
+                    $id: "#/properties/_aws",
+                    type: "object",
+                    title: "Metadata",
+                    required: ["Timestamp", "CloudWatchMetrics"],
                     properties: {
                         Timestamp: {
-                            $id: '#/properties/_aws/properties/Timestamp',
-                            type: 'integer',
-                            title: 'The Timestamp Schema',
+                            $id: "#/properties/_aws/properties/Timestamp",
+                            type: "integer",
+                            title: "The Timestamp Schema",
                             examples: [1565375354953],
                         },
                         CloudWatchMetrics: {
-                            $id: '#/properties/_aws/properties/CloudWatchMetrics',
-                            type: 'array',
-                            title: 'MetricDirectives',
+                            $id: "#/properties/_aws/properties/CloudWatchMetrics",
+                            type: "array",
+                            title: "MetricDirectives",
                             items: {
-                                $id: '#/properties/_aws/properties/CloudWatchMetrics/items',
-                                type: 'object',
-                                title: 'MetricDirective',
-                                required: ['Namespace', 'Dimensions', 'Metrics'],
+                                $id: "#/properties/_aws/properties/CloudWatchMetrics/items",
+                                type: "object",
+                                title: "MetricDirective",
+                                required: ["Namespace", "Dimensions", "Metrics"],
                                 properties: {
                                     Namespace: {
-                                        $id: '#/properties/_aws/properties/CloudWatchMetrics/items/properties/Namespace',
-                                        type: 'string',
-                                        title: 'CloudWatch Metrics Namespace',
-                                        examples: ['MyApp'],
-                                        pattern: '^(.*)$',
+                                        $id: "#/properties/_aws/properties/CloudWatchMetrics/items/properties/Namespace",
+                                        type: "string",
+                                        title: "CloudWatch Metrics Namespace",
+                                        examples: ["MyApp"],
+                                        pattern: "^(.*)$",
                                         minLength: 1,
                                         maxLength: 1024,
                                     },
                                     Dimensions: {
-                                        $id: '#/properties/_aws/properties/CloudWatchMetrics/items/properties/Dimensions',
-                                        type: 'array',
-                                        title: 'The Dimensions Schema',
+                                        $id: "#/properties/_aws/properties/CloudWatchMetrics/items/properties/Dimensions",
+                                        type: "array",
+                                        title: "The Dimensions Schema",
                                         minItems: 1,
                                         items: {
-                                            $id: '#/properties/_aws/properties/CloudWatchMetrics/items/properties/Dimensions/items',
-                                            type: 'array',
-                                            title: 'DimensionSet',
+                                            $id: "#/properties/_aws/properties/CloudWatchMetrics/items/properties/Dimensions/items",
+                                            type: "array",
+                                            title: "DimensionSet",
                                             minItems: 0,
                                             maxItems: 30,
                                             items: {
-                                                $id: '#/properties/_aws/properties/CloudWatchMetrics/items/properties/Dimensions/items/items',
-                                                type: 'string',
-                                                title: 'DimensionReference',
-                                                examples: ['Operation'],
-                                                pattern: '^(.*)$',
+                                                $id: "#/properties/_aws/properties/CloudWatchMetrics/items/properties/Dimensions/items/items",
+                                                type: "string",
+                                                title: "DimensionReference",
+                                                examples: ["Operation"],
+                                                pattern: "^(.*)$",
                                                 minLength: 1,
                                                 maxLength: 250,
                                             },
                                         },
                                     },
                                     Metrics: {
-                                        $id: '#/properties/_aws/properties/CloudWatchMetrics/items/properties/Metrics',
-                                        type: 'array',
-                                        title: 'MetricDefinitions',
+                                        $id: "#/properties/_aws/properties/CloudWatchMetrics/items/properties/Metrics",
+                                        type: "array",
+                                        title: "MetricDefinitions",
                                         items: {
-                                            $id: '#/properties/_aws/properties/CloudWatchMetrics/items/properties/Metrics/items',
-                                            type: 'object',
-                                            title: 'MetricDefinition',
-                                            required: ['Name'],
+                                            $id: "#/properties/_aws/properties/CloudWatchMetrics/items/properties/Metrics/items",
+                                            type: "object",
+                                            title: "MetricDefinition",
+                                            required: ["Name"],
                                             properties: {
                                                 Name: {
-                                                    $id: '#/properties/_aws/properties/CloudWatchMetrics/items/properties/Metrics/items/properties/Name',
-                                                    type: 'string',
-                                                    title: 'MetricName',
-                                                    examples: ['ProcessingLatency'],
-                                                    pattern: '^(.*)$',
+                                                    $id: "#/properties/_aws/properties/CloudWatchMetrics/items/properties/Metrics/items/properties/Name",
+                                                    type: "string",
+                                                    title: "MetricName",
+                                                    examples: ["ProcessingLatency"],
+                                                    pattern: "^(.*)$",
                                                     minLength: 1,
                                                     maxLength: 1024,
                                                 },
                                                 Unit: {
-                                                    $id: '#/properties/_aws/properties/CloudWatchMetrics/items/properties/Metrics/items/properties/Unit',
-                                                    type: 'string',
-                                                    title: 'MetricUnit',
-                                                    examples: ['Milliseconds'],
-                                                    pattern: '^(Seconds|Microseconds|Milliseconds|Bytes|Kilobytes|Megabytes|Gigabytes|Terabytes|Bits|Kilobits|Megabits|Gigabits|Terabits|Percent|Count|Bytes\\/Second|Kilobytes\\/Second|Megabytes\\/Second|Gigabytes\\/Second|Terabytes\\/Second|Bits\\/Second|Kilobits\\/Second|Megabits\\/Second|Gigabits\\/Second|Terabits\\/Second|Count\\/Second|None)$',
+                                                    $id: "#/properties/_aws/properties/CloudWatchMetrics/items/properties/Metrics/items/properties/Unit",
+                                                    type: "string",
+                                                    title: "MetricUnit",
+                                                    examples: ["Milliseconds"],
+                                                    pattern: "^(Seconds|Microseconds|Milliseconds|Bytes|Kilobytes|Megabytes|Gigabytes|Terabytes|Bits|Kilobits|Megabits|Gigabits|Terabits|Percent|Count|Bytes\\/Second|Kilobytes\\/Second|Megabytes\\/Second|Gigabytes\\/Second|Terabytes\\/Second|Bits\\/Second|Kilobits\\/Second|Megabits\\/Second|Gigabits\\/Second|Terabits\\/Second|Count\\/Second|None)$",
                                                 },
                                                 StorageResolution: {
-                                                    $id: '#/properties/_aws/properties/CloudWatchMetrics/items/properties/Metrics/items/properties/StorageResolution',
-                                                    type: 'integer',
-                                                    title: 'StorageResolution',
+                                                    $id: "#/properties/_aws/properties/CloudWatchMetrics/items/properties/Metrics/items/properties/StorageResolution",
+                                                    type: "integer",
+                                                    title: "StorageResolution",
                                                     examples: [60],
                                                 },
                                             },
@@ -140,7 +149,7 @@ function catalog(trackedVariable_1, metricName_1, metricNamespace_1) {
         let check = cache[`${metricNamespace}${sortedDimensions}`];
         if (check != undefined) {
             //push the metrics object to Metrics array
-            cache[`${metricNamespace}${sortedDimensions}`]['_aws']['CloudWatchMetrics'][0]['Metrics'].push({
+            cache[`${metricNamespace}${sortedDimensions}`]["_aws"]["CloudWatchMetrics"][0]["Metrics"].push({
                 Name: metricName,
                 Unit: metricUnitLabel,
                 StorageResolution: resolution,
@@ -172,11 +181,11 @@ function catalog(trackedVariable_1, metricName_1, metricNamespace_1) {
                 [`${metricName}`]: trackedVariable,
             }, CustomerDefinedDimension);
             // Log the Unit value before validation
-            console.log('index.ts - Unit value before validation: ', newEmfLog._aws.CloudWatchMetrics[0].Metrics[0].Unit);
+            console.log("index.ts - Unit value before validation: ", newEmfLog._aws.CloudWatchMetrics[0].Metrics[0].Unit);
             // validate the new EMF JSON schema against AWS EMF JSON schema before adding to cache object
             const isValid = validateEmf(newEmfLog);
             // //troubleshooting console.error in test
-            // console.log('index.ts - Validation result: ', isValid);  
+            // console.log('index.ts - Validation result: ', isValid);
             // troubleshooting console.error in emf test
             // console.log('index.ts - Validation errors: ', validateEmf.errors);
             // if it fails validation throw error
