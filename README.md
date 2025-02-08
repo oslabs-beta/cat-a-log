@@ -29,7 +29,7 @@ The catalog function  below takes in the following arguments - lets look at each
   deploy: boolean = false
 )`
 
-- **trackedVariable**: This is a number that is dynamic and can change with each call - these numbers are reflected 
+- **trackedVariable**: This is a number that is dynamic and can change with each call - these numbers are reflected in CloudWatch Metrics
 - **metricName**:
 - **metricNamespace**:
 - **metricUnitLabel**: Can only be the following labels:
