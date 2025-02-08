@@ -14,7 +14,7 @@
 import { Logger } from '@aws-lambda-powertools/logger';
 const logger = new Logger({ serviceName: 'serverlessAirline' });
 import Ajv from 'ajv';
-import {cache, catalog} from "cats-a-logs/index.js";
+import {cache, catalog} from "cat-a-logs/index.js";
 
 export const lambdaHandler = async (event, context) => {
   const response = {
@@ -23,7 +23,7 @@ export const lambdaHandler = async (event, context) => {
       message: 'hello world',
     }),
   };
-  let kilos = Math.ceil(Math.random()*70);
+  let kilos = Math.ceil(Math.random()*75);
   let pounds =Math.ceil(Math.random()*35);
   let grams = Math.ceil(Math.random()*20);
   catalog(pounds, 'poundsTest', 'lambda-junction-metrics2', 'None', {
