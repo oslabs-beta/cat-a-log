@@ -8,7 +8,4 @@ __tests__/*
 
 lambda-nodejs22.x/*
 
-webpack.config.js
-.babelrc
-
 coverage/*
