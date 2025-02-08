@@ -35,16 +35,20 @@ Your chosen Integated Development Environment (i.e. VS Code) must already be be 
         deploy: boolean = false)
       ```
 
-    - **trackedVariable**: This variable represents a number that is dynamic and can change with each call - these numbers are reflected under Metrics
-    - **metricName**: This is a unique label of the tracked variable that will be reflected inside AWS Lambda. Must be written as a `string`
-    - **metricNamespace**: This will be your metric namespace in AWS Cloudwatch the metric or metrics will appear in
-    - **metricUnitLabel**: Explict Unit that Cloudwatch uses for EMF Configuration. Please note - Can only be the following labels:
+    - **trackedVariable**: This variable represents a the numerical value of the metric that will appear under the category "Custom namespace" in Cloudwatch Metrics. Custom metric category/namespace/AWS Namespace 
+
+    located or found within AWS Cloudwatch>Metrics>All metrics>Custom namespaces(ex. lambda-PTRI)>Dimensions(ex. Seniors)
+
+    - **metricName**: This is a unique label of the tracked variable that will be reflected inside AWS Cloudwatch. Must be written as a `string` 
+      Corresponds to PTRI16Test --> AWS Cloudwatch>Metrics>All metrics>Custom namespaces
+    - **metricNamespace**: This will be your "Custom namespace" in AWS Cloudwatch>Metrics>All metrics>Custom namespaces.
+    - **metricUnitLabel**: Explict Unit that Cloudwatch uses for EMF Configuration. Please note - must be one of the following as a `string`:
       - Seconds | Microseconds | Milliseconds | Bytes | Kilobytes | Megabytes | Gigabytes | Terabytes | Bits | Kilobits | Megabits | Gigabits | Terabits | Percent | Count | Bytes/Second | Kilobytes/Second | Megabytes/Second | Gigabytes/Second | Terabytes/Second | Bits/Second | Kilobits/Second | Megabits/Second | Gigabits/Second | Terabits/Second | Count/Second | None
 
       - To read more about Metric Datum see this <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_MetricDatum.html" target="_blank">link</a>
-    - **CustomerDefinedDimension**: This is an object - key will be demension and value 
-    - **resolution**: automatically set to default value
-    - **deploy**: automatically set to false 
+    - **CustomerDefinedDimension**: This is an object -{Senior: 'hello'} Senior is the dimension label/key - when you click on it see the value hello and hello is the value of the dimension
+    - **resolution**: automatically set to default value to 60. How often its running?? Add link to AWS Article <a href= "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html#high-resolution-metrics" target="_blank">link</a>
+    - **deploy**: automatically set to false. The final catalog call you make has to switch deploy flag to true. Failure to do so will cause the cache to grow without bound and use up memory
 
 
 
