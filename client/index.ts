@@ -204,9 +204,7 @@ async function catalog(
     // validate the new EMF JSON schema against AWS EMF JSON schema before adding to cache object
     const isValid = validateEmf(newEmfLog);
     // //troubleshooting console.error in test
-    // console.log('index.ts - Validation result: ', isValid);
     // troubleshooting console.error in emf test
-    // console.log('index.ts - Validation errors: ', validateEmf.errors);
     // if it fails validation throw error
     if (!isValid) {
       console.error(
@@ -236,56 +234,3 @@ async function catalog(
   }
 }
 export { cache, catalog };
-
-/*Current Working logger invocation
-logger.info("Your EMF compliant Structured Metrics Log",
-  Object.assign({
-    _aws: {
-      Timestamp: Date.now(),
-      CloudWatchMetrics: [
-        {
-          Namespace: metricNamespace,
-          Dimensions: [Object.keys(CustomerDefinedDimension)],
-          Metrics: [
-            {
-              Name: metricName,
-              Unit: metricUnitLabel,
-              StorageResolution: resolution,
-            }
-          ]
-        }
-      ]
-    },
-    [`${metricName}`]: trackedVariable,
-    }, 
-      CustomerDefinedDimension
-    )
-  
-)
-*/
-
-//Old handler function
-// export const handler = async (_event, _context): Promise<void> => {
-//   const testObj = {
-//     testguy: "hi",
-//     fool: 42,
-//     functionVersion: "$LATEST",
-//     _aws: {
-//       Timestamp: Date.now(),
-//       CloudWatchMetrics: [
-//         {
-//           Namespace: "lambda-function-metrics",
-//           Dimensions: [["functionVersion"]],
-//           Metrics: [
-//             {
-//               Name: "fool",
-//               Unit: "Milliseconds",
-//               StorageResolution: 60
-//             }
-//           ]
-//         }
-//       ]
-//     },
-//   }
-//   logger.info(JSON.stringify(testObj));
-// };

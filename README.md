@@ -35,9 +35,9 @@ Your chosen Integated Development Environment (i.e. VS Code) must already be be 
         deploy: boolean = false)
       ```
 
-    - **trackedVariable**: This variable represents a number that is dynamic and can change with each call - these numbers are reflected 
-    - **metricName**: This is a unique name that will be reflected inside AWS Lambda. Must be written as a `string`
-    - **metricNamespace**: This will be your metric namespace in AWS Cloudwatch
+    - **trackedVariable**: This variable represents a number that is dynamic and can change with each call - these numbers are reflected under Metrics
+    - **metricName**: This is a unique label of the tracked variable that will be reflected inside AWS Lambda. Must be written as a `string`
+    - **metricNamespace**: This will be your metric namespace in AWS Cloudwatch the metric or metrics will appear in
     - **metricUnitLabel**: Explict Unit that Cloudwatch uses for EMF Configuration. Please note - Can only be the following labels:
       - Seconds | Microseconds | Milliseconds | Bytes | Kilobytes | Megabytes | Gigabytes | Terabytes | Bits | Kilobits | Megabits | Gigabits | Terabits | Percent | Count | Bytes/Second | Kilobytes/Second | Megabytes/Second | Gigabytes/Second | Terabytes/Second | Bits/Second | Kilobits/Second | Megabits/Second | Gigabits/Second | Terabits/Second | Count/Second | None
 
@@ -63,3 +63,56 @@ if you write name that it will overwrite the keys
 
 **Tech Challenges**
 Spent 3 days dealing with inconsistencies of ES6/CommonJS in our code before compiling .js in ES6
+
+**Files to Delete**
+App.js
+App.tsx
+tailwind.css?
+tailwind.config.js
+input.css?
+postcss.config.js
+server(folder)
+coverage (folder)
+bin (folder)
+template.html
+testlogger.js 
+
+-->webpack.config.js?  **Test renaming to see if it breaks.  
+
+Package json: 
+    "@babel/core": "^7.25.7",
+    "@babel/plugin-transform-runtime": "^7.25.7",
+    "@babel/preset-env": "^7.25.8",
+    "@babel/preset-react": "^7.25.7",
+    "@babel/runtime": "^7.25.7",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^9.2.1",
+    "cross-env": "^7.0.3",
+    "css-loader": "^7.1.2",
+    "html-webpack-plugin": "^5.6.0",
+    "node-mocks-http": "^1.16.1",
+    "nodemon": "^3.1.7",
+    "postcss": "^8.4.49",
+    "postcss-loader": "^8.1.1",
+    "postcss-preset-env": "^10.1.1",
+    "sass": "^1.80.5",
+    "sass-loader": "^16.0.2",
+    "style-loader": "^4.0.0",
+    "tailwindcss": "^3.4.15",
+    "webpack": "^5.95.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.1.0"
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "express-session": "^1.18.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.27.0"
+
+**npmignore**
+lambda-nodejs22.x
+
+**gitignore**
+lambda-nodejs22.x

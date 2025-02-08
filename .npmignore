@@ -1,0 +1,14 @@
+.env
+
+node_modules
+
+.vscode/
+
+__tests__/*
+
+lambda-nodejs22.x/*
+
+webpack.config.js
+.babelrc
+
+coverage/*
