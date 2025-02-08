@@ -12,4 +12,7 @@ dist/
 
 # ignore coverage reports & tests
 /coverage
-__tests__
+# __tests__
+
+#lambda function
+lambda-nodejs22.x
