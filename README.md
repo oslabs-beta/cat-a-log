@@ -141,13 +141,12 @@ Put License Information Here
       <a href="https://github.com/brianmichaelanderson">🐙</a>
     </td>
     <td align="center">
-      <img src="https://avatars.githubusercontent.com/u/22311749?v=4" width="140px;" alt=""/>
+      <img src="https://avatars.githubusercontent.com/u/167483334?v=4" width="140px;" alt=""/>
       <br />
-      <sub><b>Curran Lee</b></sub>
+      <sub><b>Harris Awan</b></sub>
       <br />
-      <a href="http://www.philliptroutman.info">💻</a>
       <a href="https://www.linkedin.com/in/phillip-troutman/">🖇️</a>
-      <a href="https://github.com/troutman21">🐙</a>
+      <a href="https://github.com/HarrAwa">🐙</a>
     </td>
      <td align="center">
       <img src="https://avatars.githubusercontent.com/u/26197909?v=4" width="140px;" alt=""/>
