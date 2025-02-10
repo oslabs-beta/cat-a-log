@@ -133,7 +133,7 @@ Put License Information Here
       <a href="https://github.com/clararegula">🐙</a>
     </td>
     <td align="center">
-      <img src="./snapshots/BrianAnderson.PNG" width="140px;" alt=""/>
+      <img src="https://avatars.githubusercontent.com/u/170294267?v=4" width="140px;" alt=""/>
       <br />
       <sub><b>Brian Anderson</b></sub>
       <br />
