@@ -89,23 +89,85 @@ Your chosen Integated Development Environment (i.e. VS Code) must already be be 
 7. See your metrics and structured in CloudWatch! 
 
 ## Open Source Contributions:
-- Contribution Areas:
-  - Ready to Use: Typescript, EMF Object cache?, 
-    EMF specification support:
-     - AWS Lambda (check)
-        - Uses AWS Powertools Logger (check?)
-     - EC2: (Need support)
-  - Features to  Build: EC2 Support with compatable structured loggin library such as Winston
+We are actively looking for contributors to our project! In order to get started we ask that you follow the below guidelines:
 
-- How we would like users to contribute: Clone our Respistory --> Make Feature Branch --> Push to your feature branch --> Pull Request
+  - Clone our Repository from GitHub <a href="https://github.com/oslabs-beta/cat-a-log" target="_blank">here</a> 
+  - Make a Feature Branch 
+  - Make your contributions
+  - Push to your Feature Branch in GitHub
+  - Make a Pull Request to our Repository!
 
+
+| AWS MicroService Support                                                              | Status    |
+|---------------------------------------------------------------------------------------|-----------|
+| Lamda                                                                                 | ✅        |
+| EC2                                                                                   | ⏳        |
+
+
+
+|Feature                                                                                |Status     |
+|---------------------------------------------------------------------------------------|-----------|
+| TypeScript                                                                            | ✅        |
+| Embedded Metric Format Object Caching                                                 | ✅        |
+| Winson                                                                                | ⏳        |
+| Adding front end for Cat-A-Log                                                        | 🙏🏻        |
+
+
+- ✅ = Ready to use
+- ⏳ = In progress
+- 🙏🏻 = Looking for contributors
 
 ## License Information:
 Put License Information Here
 
 
 ## Contributor Information:
-Contributor Info here
+ <table>
+  <tr>
+    <td align="center">
+      <img src="https://avatars.githubusercontent.com/u/161962009?v=4" width="140px;" alt=""/>
+      <br />
+      <sub><b>Clara Regula</b></sub>
+      <br />
+      <a href="https://www.linkedin.com/search/results/all/?fetchDeterministicClustersOnly=false&heroEntityKey=urn%3Ali%3Afsd_profile%3AACoAABKxIR0BLV8OyI1zzVgyL3KR2K0ePJ7tQS4&keywords=allison%20pratt&origin=RICH_QUERY_SUGGESTION&position=0&searchId=81cd2d60-188d-44c9-99ce-acff05157dc7&sid=~xo">🖇️</a>
+      <a href="https://github.com/clararegula">🐙</a>
+    </td>
+    <td align="center">
+      <img src="https://avatars.githubusercontent.com/u/170294267?v=4" width="140px;" alt=""/>
+      <br />
+      <sub><b>Brian Anderson</b></sub>
+      <br />
+      <a href="https://www.linkedin.com/search/results/all/?fetchDeterministicClustersOnly=false&heroEntityKey=urn%3Ali%3Afsd_profile%3AACoAAA4wGg4B94KTig7u7BXG-d_hbiDT6_INpB8&keywords=katrina%20villanueva&origin=RICH_QUERY_SUGGESTION&position=0&searchId=61fd3f0e-8949-4718-a772-d24f2617e726&sid=Zr~">🖇️</a>
+      <a href="https://github.com/brianmichaelanderson">🐙</a>
+    </td>
+    <td align="center">
+      <img src="https://avatars.githubusercontent.com/u/167483334?v=4" width="140px;" alt=""/>
+      <br />
+      <sub><b>Harris Awan</b></sub>
+      <br />
+      <a href="https://www.linkedin.com/in/phillip-troutman/">🖇️</a>
+      <a href="https://github.com/HarrAwa">🐙</a>
+    </td>
+     <td align="center">
+      <img src="https://avatars.githubusercontent.com/u/26197909?v=4" width="140px;" alt=""/>
+      <br />
+      <sub><b>Natalie Klein</b></sub>
+      <br />
+      <a href="https://www.linkedin.com/search/results/all/?fetchDeterministicClustersOnly=false&heroEntityKey=urn%3Ali%3Afsd_profile%3AACoAABxBUMYBYh3jl6z8XMVs4D1VjdqU-oastdc&keywords=natalie%20klein&origin=RICH_QUERY_SUGGESTION&position=0&searchId=7ca29d7e-56b5-4dce-a2a1-f9d9e5594052&sid=XY8">🖇️</a>
+      <a href="https://github.com/natalie-klein">🐙</a>
+    <td align="center">
+      <img src="https://avatars.githubusercontent.com/u/80185584?v=4" width="140px;" alt=""/>
+      <br />
+      <sub><b>Mike Masatsugu</b></sub>
+      <br />
+      <a href="https://www.linkedin.com/search/results/all/?fetchDeterministicClustersOnly=false&heroEntityKey=urn%3Ali%3Afsd_profile%3AACoAAAnv9wwBJJ9SgtkuND-IT1hQIl6hVS50AJ4&keywords=mike%20masatsugu&origin=RICH_QUERY_SUGGESTION&position=0&searchId=51ea03d4-28fa-431c-b97c-df470d78d606&sid=~Ov">🖇️</a>
+      <a href="https://github.com/mikemasatsugu">🐙</a>
+    </td>
+</table>
+
+
+- 🖇️ = LinkedIn
+- 🐙 = Github
   
 ## Notes to Self:
 **Structure of the files:**
