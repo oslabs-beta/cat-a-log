@@ -3,12 +3,13 @@ import { Ajv } from "ajv";
 
 //cache entries are structured thusly: 'Namespace + Dimensions(Alphabetically)': EMFObject
 const cache: { [key: string]: any } = {};
-//Example for in-line use of Cat-a-log w/maximum arguments: catalog(kilos, "kilos" , "lambda-function-metrics", "Kilograms", {'functionVersion': $LATEST, 'testDimension': derp}, 60, deploy);
-//Example for in-line use of Cat-a-log w/minimum arguments: catalog(kilos, "kilos" , "lambda-function-metrics");
+//let latency = 300; (Example metric to track)
+//Example for in-line use of Cat-a-log w/maximum arguments: catalog(latency, "Latency" , "lambda-function-metrics", "Milliseconds", {'functionVersion': '$LATEST', 'Server': 'Prod'}, 60, deploy);
+//Example for in-line use of Cat-a-log w/minimum arguments: catalog(latency, "Latency");
 async function catalog(
   trackedVariable: number | Array<number>,
   metricName: string,
-  metricNamespace: string,
+  metricNamespace: string = "CatALog-Default-Metrics",
   metricUnitLabel: string = "None",
   CustomerDefinedDimension: { [key: string]: string } = {},
   resolution: 1 | 60 = 60,
@@ -36,11 +37,11 @@ async function catalog(
       throw new Error("metric value cannot have more than 100 elements");
   }
   //EMF specification catch: make sure provided dimension object does not have more than 30 entries
-  if (Object.keys(CustomerDefinedDimension).length > 30) {
-    throw new Error(
-      "EMF has a limit of 30 user defined dimension keys per log"
-    );
-  }
+  // if (Object.keys(CustomerDefinedDimension).length > 30) {
+  //   throw new Error(
+  //     "EMF has a limit of 30 user defined dimension keys per log"
+  //   );
+  // }
   //Create new instance of Logger to use in function
   const logger = new Logger({ serviceName: "serverlessAirline" });
   //Set up Ajv instance for JSON validation
@@ -173,7 +174,7 @@ async function catalog(
     //add key value to root of existing structured Log
     check[`${metricName}`] = trackedVariable;
   } else {
-    //create new Structured Log and add it to cachedStructuredLogs  - BMA 1/18/25 removed to test Ajv
+    //create new Structured Log and add it to cachedStructuredLogs
     //If NameSpace & Dimensions for EMF part don't exist yet, initialize variable to capture EMF/aws key:value pair
     const newEmfLog = Object.assign(
       {
