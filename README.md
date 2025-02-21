@@ -28,14 +28,14 @@ Your chosen Integated Development Environment (i.e. VS Code) must already be be 
       function catalog(
         trackedVariable: number | Array<number>,
         metricName: string,
-        metricNamespace: string,
+        metricNamespace: string = "CatALog-Default-Metrics",
         metricUnitLabel: string = "None",
         CustomerDefinedDimension: { [key: string]: string } = {},
         resolution: 1 | 60 = 60,
         deploy: boolean = false)
       ```
 
-    - **trackedVariable**: This variable represents a the numerical value of the metric that will appear under the category "Custom namespace" in Cloudwatch Metrics. Custom metric category/namespace/AWS Namespace. This is AWS Cloudwatch>Metrics>All metrics>Custom namespaces(ex. lambda-PTRI)>Dimensions(ex. Seniors)
+    - **trackedVariable**: This variable represents a the numerical value of the metric that will appear under the category "Custom namespace" in Cloudwatch Metrics. Custom metric category/namespace/AWS Namespace. This is AWS Cloudwatch>Metrics>All metrics>Custom namespaces(ex. CatALog)>Dimensions(ex. Server, functionVersion)
 
     <p align="center">
     <img src="./snapshots/trackedVariable.png" width="600" />
@@ -43,13 +43,13 @@ Your chosen Integated Development Environment (i.e. VS Code) must already be be 
 
 
     - **metricName**: This is a unique label of the tracked variable that will be reflected inside AWS Cloudwatch. Must be written as a `string` 
-      In the below image this corresponds to PTRI16Test --> AWS Cloudwatch>Metrics>All metrics>Custom namespaces
+      In the below image this corresponds to `Latency` --> AWS Cloudwatch>Metrics>All metrics>Custom namespaces
 
     <p align="center">
     <img src="./snapshots/metricName.png" width="600"/>
     </p>
 
-    - **metricNamespace**: This will be your "Custom namespace" in AWS Cloudwatch>Metrics>All metrics>Custom namespaces. In below image this is represented by lamdba-PTRI
+    - **metricNamespace**: This will be your "Custom namespace" in AWS Cloudwatch>Metrics>All metrics>Custom namespaces. In below image this is represented by CatALog
 
     <p align="center">
     <img src="./snapshots/customNameSpace.png" width="600"/>
@@ -59,7 +59,7 @@ Your chosen Integated Development Environment (i.e. VS Code) must already be be 
       - Seconds | Microseconds | Milliseconds | Bytes | Kilobytes | Megabytes | Gigabytes | Terabytes | Bits | Kilobits | Megabits | Gigabits | Terabits | Percent | Count | Bytes/Second | Kilobytes/Second | Megabytes/Second | Gigabytes/Second | Terabytes/Second | Bits/Second | Kilobits/Second | Megabits/Second | Gigabits/Second | Terabits/Second | Count/Second | None
 
       - To read more about Metric Datum see this <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_MetricDatum.html" target="_blank">link</a>
-    - **CustomerDefinedDimension**: This is an object - `{ Senior: 'hello'}` Senior is the dimension label/key - when you click on it see the value hello and hello is the value of the dimension
+    - **CustomerDefinedDimension**: This is an object - `{'functionVersion': '$LATEST', 'Server': 'Prod'}` functionVersion & Server is the dimension label/key - when you click on it see the value `$LATEST` and `Prod` is the value of the dimension
 
         - The key will show up in AWS Cloudwatch as below:
 
@@ -67,7 +67,7 @@ Your chosen Integated Development Environment (i.e. VS Code) must already be be 
           <img src="./snapshots/keyDefined.png" width="600"/>
           </p>
 
-        - If the user clicks on the Seniors Dimension then you will see the value - in this example "hello" reflected as below:
+        - If the user clicks on the Server, functionVersion Dimension then you will see the value - in this example `$LATEST` & `Prod` reflected as below:
 
           <p align="center">
           <img src="./snapshots/metricName.png" width="600"/>
@@ -129,7 +129,7 @@ Put License Information Here
       <br />
       <sub><b>Clara Regula</b></sub>
       <br />
-      <a href="https://www.linkedin.com/search/results/all/?fetchDeterministicClustersOnly=false&heroEntityKey=urn%3Ali%3Afsd_profile%3AACoAABKxIR0BLV8OyI1zzVgyL3KR2K0ePJ7tQS4&keywords=allison%20pratt&origin=RICH_QUERY_SUGGESTION&position=0&searchId=81cd2d60-188d-44c9-99ce-acff05157dc7&sid=~xo">🖇️</a>
+      <a href="http://www.linkedin.com/in/clara-regula">🖇️</a>
       <a href="https://github.com/clararegula">🐙</a>
     </td>
     <td align="center">
@@ -137,7 +137,7 @@ Put License Information Here
       <br />
       <sub><b>Brian Anderson</b></sub>
       <br />
-      <a href="https://www.linkedin.com/search/results/all/?fetchDeterministicClustersOnly=false&heroEntityKey=urn%3Ali%3Afsd_profile%3AACoAAA4wGg4B94KTig7u7BXG-d_hbiDT6_INpB8&keywords=katrina%20villanueva&origin=RICH_QUERY_SUGGESTION&position=0&searchId=61fd3f0e-8949-4718-a772-d24f2617e726&sid=Zr~">🖇️</a>
+      <a href="https://www.linkedin.com/in/brian-anderson-24370630/">🖇️</a>
       <a href="https://github.com/brianmichaelanderson">🐙</a>
     </td>
     <td align="center">
@@ -145,20 +145,20 @@ Put License Information Here
       <br />
       <sub><b>Harris Awan</b></sub>
       <br />
-      <a href="https://www.linkedin.com/in/phillip-troutman/">🖇️</a>
+      <a href="http://www.linkedin.com/in/harrawan123/">🖇️</a>
       <a href="https://github.com/HarrAwa">🐙</a>
     </td>
      <td align="center">
       <img src="https://avatars.githubusercontent.com/u/26197909?v=4" width="140px;" alt=""/>
       <br />
-      <sub><b>Natalie Klein</b></sub>
+      <sub><b>Curran Lee</b></sub>
       <br />
       <a href="https://www.linkedin.com/search/results/all/?fetchDeterministicClustersOnly=false&heroEntityKey=urn%3Ali%3Afsd_profile%3AACoAABxBUMYBYh3jl6z8XMVs4D1VjdqU-oastdc&keywords=natalie%20klein&origin=RICH_QUERY_SUGGESTION&position=0&searchId=7ca29d7e-56b5-4dce-a2a1-f9d9e5594052&sid=XY8">🖇️</a>
       <a href="https://github.com/natalie-klein">🐙</a>
     <td align="center">
       <img src="https://avatars.githubusercontent.com/u/80185584?v=4" width="140px;" alt=""/>
       <br />
-      <sub><b>Mike Masatsugu</b></sub>
+      <sub><b>Jacob Alexander</b></sub>
       <br />
       <a href="https://www.linkedin.com/search/results/all/?fetchDeterministicClustersOnly=false&heroEntityKey=urn%3Ali%3Afsd_profile%3AACoAAAnv9wwBJJ9SgtkuND-IT1hQIl6hVS50AJ4&keywords=mike%20masatsugu&origin=RICH_QUERY_SUGGESTION&position=0&searchId=51ea03d4-28fa-431c-b97c-df470d78d606&sid=~Ov">🖇️</a>
       <a href="https://github.com/mikemasatsugu">🐙</a>
