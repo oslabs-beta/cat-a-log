@@ -149,19 +149,19 @@ Put License Information Here
       <a href="https://github.com/HarrAwa">🐙</a>
     </td>
      <td align="center">
-      <img src="https://avatars.githubusercontent.com/u/26197909?v=4" width="140px;" alt=""/>
+      <img src="https://avatars.githubusercontent.com/u/106503739?v=4" width="140px;" alt=""/>
       <br />
       <sub><b>Curran Lee</b></sub>
       <br />
-      <a href="https://www.linkedin.com/search/results/all/?fetchDeterministicClustersOnly=false&heroEntityKey=urn%3Ali%3Afsd_profile%3AACoAABxBUMYBYh3jl6z8XMVs4D1VjdqU-oastdc&keywords=natalie%20klein&origin=RICH_QUERY_SUGGESTION&position=0&searchId=7ca29d7e-56b5-4dce-a2a1-f9d9e5594052&sid=XY8">🖇️</a>
-      <a href="https://github.com/natalie-klein">🐙</a>
+      <a href="https://www.linkedin.com/in/curranjlee/">🖇️</a>
+      <a href="https://github.com/CJLee5">🐙</a>
     <td align="center">
-      <img src="https://avatars.githubusercontent.com/u/80185584?v=4" width="140px;" alt=""/>
+      <img src="https://avatars.githubusercontent.com/u/142838412?v=4" width="140px;" alt=""/>
       <br />
       <sub><b>Jacob Alexander</b></sub>
       <br />
-      <a href="https://www.linkedin.com/search/results/all/?fetchDeterministicClustersOnly=false&heroEntityKey=urn%3Ali%3Afsd_profile%3AACoAAAnv9wwBJJ9SgtkuND-IT1hQIl6hVS50AJ4&keywords=mike%20masatsugu&origin=RICH_QUERY_SUGGESTION&position=0&searchId=51ea03d4-28fa-431c-b97c-df470d78d606&sid=~Ov">🖇️</a>
-      <a href="https://github.com/mikemasatsugu">🐙</a>
+      <a href="https://www.linkedin.com/in/jacoblanealexander/">🖇️</a>
+      <a href="https://github.com/jacob-jpg1">🐙</a>
     </td>
 </table>
 
