@@ -1,28 +1,42 @@
-# Welcome to Cat-A-Log!
-This npm package will help you create AWS Embedded Metric Format Logs and publish them to AWS Cloudwatch using AWS Lambda Powertools. EMF formatting will allow for chosen metrics to be automatically visualized in Cloudwatch metrics  for simplier log debugging.
-
-  <p align="center">
+ <p align="center">
   <img src="./snapshots/Catalog_art.png" width="200" />
   </p>
 
+# Welcome to Cat-A-Log!
+This npm package helps you integrate AWS CloudWatch with AWS Embedded Metric Format (EMF) Logs and publish them to Cloudwatch using AWS Lambda Powertools. EMF formatting will allow for chosen metrics to be automatically visualized in Cloudwatch metrics for simpler log debugging.
 
-## About Embedded Metric Formatting (EMF):
-This is a JSON specification to communicate with Cloudwatch Logs to automatically extract values embedded in the structured log events. EMF is especially great for applications that make logs and need custom metrics without more complexity or cost. For more information please visit the following link:
-<a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Embedded_Metric_Format_Specification.html" target="_blank">AWS Documentation on EMF Formatting</a>
+## Table of Contents
+- [Cat-A-Log](#why-use-cat-a-log)
+- [EMF](#about-embedded-metric-formatting-emf)
+- [Installation](#instructions)
+- [How to Contribute](#open-source-contributions)
+- [Contributors](#contributor-information)
+
+
+  <!-- <p align="center">
+  <img src="./snapshots/Catalog_art.png" width="200" />
+  </p> -->
 
 ## Why use Cat-A-Log?
-Why use a washing machine when you can do them by hand? Because it saves you time and makes your job way easier! Leveraging AWS Lambda Powertools we can use the cat-a-log function to invoke and format logs into AWS Embedded Metric Format. By publishing these logs to AWS Cloudwatch, we are able to provide engineers with automatic metric visulaization to make the process of debugging logs much more efficient. Cat-a-log utilizies a cache to make effcient work of sending logs to Cloudwatch.
+Why use a washing machine when you can do them by hand? Because it saves you time and makes your job way easier! Leveraging AWS Lambda Powertools we can use the cat-a-log function to invoke and format logs into AWS Embedded Metric Format. By publishing these logs to AWS Cloudwatch, we are able to provide engineers with automatic metric visualization to make the process of debugging logs much more efficient. Cat-a-log utilizes a cache to make efficient work of sending logs to Cloudwatch.
+
+## About Embedded Metric Formatting (EMF):
+EMF is a JSON specification that enables CloudWatch Logs to automatically extract embedded metric values from structured log events. It simplifies real-time monitoring by reducing complexity and cost for applications needing custom metrics and structured logging. For more information please visit the following link:
+<a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Embedded_Metric_Format_Specification.html" target="_blank">AWS Documentation on EMF Formatting</a>
+
+<!-- ## Why use Cat-A-Log?
+Why use a washing machine when you can do them by hand? Because it saves you time and makes your job way easier! Leveraging AWS Lambda Powertools we can use the cat-a-log function to invoke and format logs into AWS Embedded Metric Format. By publishing these logs to AWS Cloudwatch, we are able to provide engineers with automatic metric visulaization to make the process of debugging logs much more efficient. Cat-a-log utilizies a cache to make effcient work of sending logs to Cloudwatch. -->
 
 
 ## Instructions
-**Prerequites:**
-Your chosen Integated Development Environment (i.e. VS Code) must already be be connected to AWS Lambda. For more guidence on setting up AWS Lambda we recommend following this helpful tutorial from AWS: <a href="https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-getting-started-hello-world.html" target="_blank">Deploy Hello World Application with AWS SAM</a>
+**Prerequisites:**
+Your chosen Integrated Development Environment (i.e. VS Code) must already be connected to AWS Lambda. For more guidance on setting up AWS Lambda we recommend following this helpful tutorial from AWS: <a href="https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-getting-started-hello-world.html" target="_blank">Deploy Hello World Application with AWS SAM</a>
 
 **Installation:**
 1. Install our package using the command `npm install cat-a-logs` then import the function and cache into your js file that connects to AWS Lambda `import { cache, catalog } from "cat-a-logs/index.js";` Check out Cat-A-Log on npm using the attached link:
 <a href="https://www.npmjs.com/package/cat-a-logs?activeTab=readme" target="_blank">Cat-A-Log</a>
 
-2. Now enter your arguments into the catalog function! Lets go through each argument one at a time and see what this looks like. First Lets take a look at the function definition:
+2. Now enter your arguments into the catalog function! Let's go through each argument one at a time and see what this looks like. First let's take a look at the function definition:
 
       ```
       function catalog(
@@ -35,7 +49,7 @@ Your chosen Integated Development Environment (i.e. VS Code) must already be be 
         deploy: boolean = false)
       ```
 
-    - **trackedVariable**: This variable represents a the numerical value of the metric that will appear under the category "Custom namespace" in Cloudwatch Metrics. Custom metric category/namespace/AWS Namespace. This is AWS Cloudwatch>Metrics>All metrics>Custom namespaces(ex. CatALog)>Dimensions(ex. Server, functionVersion)
+    - **trackedVariable**: This variable represents the numerical value of the metric that will appear under the category "Custom namespace" in Cloudwatch Metrics. Custom metric category/namespace/AWS Namespace. This is AWS Cloudwatch>Metrics>All metrics>Custom namespaces(ex. CatALog)>Dimensions(ex. Server, functionVersion)
 
     <p align="center">
     <img src="./snapshots/trackedVariable.png" width="600" />
@@ -55,7 +69,7 @@ Your chosen Integated Development Environment (i.e. VS Code) must already be be 
     <img src="./snapshots/customNameSpace.png" width="600"/>
     </p>
 
-    - **metricUnitLabel**: Explict Unit that Cloudwatch uses for EMF Configuration. Please note - must be one of the following as a `string`:
+    - **metricUnitLabel**: Explicit  Unit that Cloudwatch uses for EMF Configuration. Please note - must be one of the following as a `string`:
       - Seconds | Microseconds | Milliseconds | Bytes | Kilobytes | Megabytes | Gigabytes | Terabytes | Bits | Kilobits | Megabits | Gigabits | Terabits | Percent | Count | Bytes/Second | Kilobytes/Second | Megabytes/Second | Gigabytes/Second | Terabytes/Second | Bits/Second | Kilobits/Second | Megabits/Second | Gigabits/Second | Terabits/Second | Count/Second | None
 
       - To read more about Metric Datum see this <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_MetricDatum.html" target="_blank">link</a>
@@ -82,9 +96,9 @@ Your chosen Integated Development Environment (i.e. VS Code) must already be be 
 
 4. ON the very last function call - it is important to change the deploy parameter to `true`. 
 
-5. Deploy your code with AWS SAM. This will place the file in AWS Lambda waiting for invokation.
+5. Deploy your code with AWS SAM. This will place the file in AWS Lambda waiting for invocation.
 
-6. Invoke your AWS Lamda Function
+6. Invoke your AWS Lambda Function
 
 7. See your metrics and structured in CloudWatch! 
 
@@ -100,7 +114,7 @@ We are actively looking for contributors to our project! In order to get started
 
 | AWS MicroService Support                                                              | Status    |
 |---------------------------------------------------------------------------------------|-----------|
-| Lamda                                                                                 | ✅        |
+| Lambda                                                                                 | ✅        |
 | EC2                                                                                   | ⏳        |
 
 
@@ -109,7 +123,7 @@ We are actively looking for contributors to our project! In order to get started
 |---------------------------------------------------------------------------------------|-----------|
 | TypeScript                                                                            | ✅        |
 | Embedded Metric Format Object Caching                                                 | ✅        |
-| Winson                                                                                | ⏳        |
+| Winston                                                                                | ⏳        |
 | Adding front end for Cat-A-Log                                                        | 🙏🏻        |
 
 
@@ -118,7 +132,7 @@ We are actively looking for contributors to our project! In order to get started
 - 🙏🏻 = Looking for contributors
 
 ## License Information:
-Put License Information Here
+This project is licensed under the MIT License -  see the [LICENSE](LICENSE) file for details
 
 
 ## Contributor Information:
@@ -169,7 +183,7 @@ Put License Information Here
 - 🖇️ = LinkedIn
 - 🐙 = Github
   
-## Notes to Self:
+<!-- ## Notes to Self:
 **Structure of the files:**
 
 `index.ts` is compiled to `index.js`. Important to compile `.ts` file to es6 js syntax using the `tsc —target es6 (filepath)` command
@@ -188,4 +202,4 @@ Spent 3 days dealing with inconsistencies of ES6/CommonJS in our code before com
 **To DO LIST ITEMS**
 - How can the user visaulize the cache growing in real time?
 - Creating more professional scrreenshots for the ReadMe - to replace the current ReadMe screenshots
-- Add License Information
+- Add License Information -->
