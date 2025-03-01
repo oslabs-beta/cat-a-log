@@ -1,7 +1,7 @@
 import { Logger } from "@aws-lambda-powertools/logger";
 import { Ajv } from "ajv";
 
-//cache entries are structured thusly: 'Namespace + Dimensions(Alphabetically)': EMFObject
+//cache entries are structured thusly: 'Namespace + DimensionsKeys(Alphabetically)': EMFObject
 const cache: { [key: string]: any } = {};
 //let latency = 300; (Example metric to track)
 //Example for in-line use of Cat-a-log w/maximum arguments: catalog(latency, "Latency" , "lambda-function-metrics", "Milliseconds", {'functionVersion': '$LATEST', 'Server': 'Prod'}, 60, deploy);
@@ -25,7 +25,7 @@ async function catalog(
     if(badKeys.includes(yourKeys[i])){
       //if a dimension name or metric name conflicts with native logger keys, throw error
       throw new Error(
-        "metricName, or Dimension names cannot be the same as these native logger keys: level || message || sampling_rate || service || timestamp || xray_trace_id"
+        "metricName, or Dimension names CANNOT be the same as these native Logger keys: level || message || sampling_rate || service || timestamp || xray_trace_id"
       );
     }
   }
@@ -37,11 +37,11 @@ async function catalog(
       throw new Error("metric value cannot have more than 100 elements");
   }
   //EMF specification catch: make sure provided dimension object does not have more than 30 entries
-  // if (Object.keys(CustomerDefinedDimension).length > 30) {
-  //   throw new Error(
-  //     "EMF has a limit of 30 user defined dimension keys per log"
-  //   );
-  // }
+  if (Object.keys(CustomerDefinedDimension).length > 30) {
+    throw new Error(
+      "EMF has a limit of 30 user defined dimension keys per log"
+    );
+  }
   //Create new instance of Logger to use in function
   const logger = new Logger({ serviceName: "serverlessAirline" });
   //Set up Ajv instance for JSON validation
@@ -230,7 +230,7 @@ async function catalog(
       );
     }
     //clear cache after logging all cached objects to Lambda
-    console.log("BEFORE:", cache);
+    console.log("BEFORE:", JSON.stringify(cache, null, 2));
     for (var member in cache) delete cache[member];
     console.log("AFTER:", cache);
   }

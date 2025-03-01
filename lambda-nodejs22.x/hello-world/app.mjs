@@ -11,9 +11,6 @@
  *
  */
 
-// import { Logger } from '@aws-lambda-powertools/logger';
-// const logger = new Logger({ serviceName: 'serverlessAirline' });
-// import Ajv from 'ajv';
 import {catalog} from "cat-a-logs/index.js";
 
 export const lambdaHandler = async (event, context) => {
@@ -24,23 +21,22 @@ export const lambdaHandler = async (event, context) => {
     }),
   };
   
-  let kilos = Math.ceil(Math.random()*75);
-  let pounds =Math.ceil(Math.random()*35);
-  let grams = Math.ceil(Math.random()*20);
+  let testVariable1 = Math.ceil(Math.random()*75);
+  let testVariable2 = Math.ceil(Math.random()*35);
+  let testVariable3 = Math.ceil(Math.random()*20);
 
-  catalog(pounds, 'poundsTest', 'lambda-junction-metrics2', 'None', {
+  catalog(testVariable1, 'Test01', 'lambda-function-metrics2', 'None', {
     functionVersion: '$LATEST',
-    testDimension: 'berp',
+    testDimension: 'experimental',
   });
 
-  catalog(grams, 'randomTest', 'lambda-junction-metrics2', 'Count', {
-    testDimension: 'berp',
+  catalog(testVariable2, 'Test02', 'lambda-function-metrics2', 'Count', {
+    testDimension: 'experimental',
     functionVersion: '$LATEST',
   });
 
-  // catalog(kilos, 'level', 'lambda-junction-metrics2');
   catalog(
-    kilos,
+    testVariable3,
     'Latency',
     'CatALog',
     'Milliseconds',
