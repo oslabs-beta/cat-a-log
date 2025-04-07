@@ -3,12 +3,13 @@
   </p>
 
 # Welcome to Cat-A-Log!
-This npm package helps you integrate AWS CloudWatch with AWS Embedded Metric Format (EMF) Logs and publish them to Cloudwatch using AWS Lambda Powertools. EMF formatting will allow for chosen metrics to be automatically visualized in Cloudwatch metrics for simpler log debugging.
+This npm package helps you integrate AWS CloudWatch with AWS Embedded Metric Format (EMF) Logs and publish them to Cloudwatch using AWS Lambda Powertools. EMF formatting will allow for chosen metrics to be automatically visualized in Cloudwatch metrics for centralized observability of your application KPIs. Read Our Medium article to learn more about the Cat-A-Log story:
+<a href="https://medium.com/cat-a-log/adding-embedded-metric-formatting-to-aws-lambda-logs-for-simplified-debugging-ee388fdfd3db" target="_blank">Easily Automate Custom Metrics in CloudWatch with EMF in Lambda</a>
 
 ## Table of Contents
 - [Cat-A-Log](#why-use-cat-a-log)
 - [EMF](#about-embedded-metric-formatting-emf)
-- [Installation](#instructions)
+- [Instructions](#instructions)
 - [How to Contribute](#open-source-contributions)
 - [Contributors](#contributor-information)
 
@@ -24,8 +25,6 @@ Why use a washing machine when you can do them by hand? Because it saves you tim
 EMF is a JSON specification that enables CloudWatch Logs to automatically extract embedded metric values from structured log events. It simplifies real-time monitoring by reducing complexity and cost for applications needing custom metrics and structured logging. For more information please visit the following link:
 <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/CloudWatch_Embedded_Metric_Format_Specification.html" target="_blank">AWS Documentation on EMF Formatting</a>
 
-<!-- ## Why use Cat-A-Log?
-Why use a washing machine when you can do them by hand? Because it saves you time and makes your job way easier! Leveraging AWS Lambda Powertools we can use the cat-a-log function to invoke and format logs into AWS Embedded Metric Format. By publishing these logs to AWS Cloudwatch, we are able to provide engineers with automatic metric visulaization to make the process of debugging logs much more efficient. Cat-a-log utilizies a cache to make effcient work of sending logs to Cloudwatch. -->
 
 
 ## Instructions
@@ -36,7 +35,7 @@ Your chosen Integrated Development Environment (i.e. VS Code) must already be co
 1. Install our package using the command `npm install cat-a-logs` then import the functions into your js file that connects to AWS Lambda `import { deployCatalog, catalog } from "cat-a-logs/index.js";` Check out Cat-A-Log on npm using the attached link:
 <a href="https://www.npmjs.com/package/cat-a-logs?activeTab=readme" target="_blank">Cat-A-Log</a>
 
-2. Now enter your arguments into the catalog function! Let's go through each argument one at a time and see what this looks like. First let's take a look at the function definition:
+2. Now enter your arguments into the catalog function! Let's go through each parameter one at a time and see what this looks like. First let's take a look at the function definition:
 
       ```
       function catalog(
@@ -49,27 +48,27 @@ Your chosen Integrated Development Environment (i.e. VS Code) must already be co
         deploy: boolean = false)
       ```
 
-    - **trackedVariable**: This variable represents the numerical value of the metric that will appear under the category "Custom namespace" in Cloudwatch Metrics. Custom metric category/namespace/AWS Namespace. This is AWS Cloudwatch>Metrics>All metrics>Custom namespaces(ex. CatALog)>Dimensions(ex. Server, functionVersion)
+    - **trackedVariable**: This variable represents the numerical value (or an Array containing a maximum of 100 numerical values) of the metric that will appear under the category "Custom namespace" in Cloudwatch Metrics. This is AWS Cloudwatch>Metrics>All metrics>Custom namespaces(ex. CatALog)>Dimensions(ex. Server, functionVersion)
 
     <p align="center">
     <img src="./snapshots/trackedVariable.png" width="600" />
     </p>
 
 
-    - **metricName**: This is a unique label of the tracked variable that will be reflected inside AWS Cloudwatch. Must be written as a `string` 
+    - **metricName**: This is a unique label of the tracked variable that will be reflected inside AWS Cloudwatch. Must be written as a `string`. 
       In the below image this corresponds to `Latency` --> AWS Cloudwatch>Metrics>All metrics>Custom namespaces
 
     <p align="center">
     <img src="./snapshots/metricName.png" width="600"/>
     </p>
 
-    - **metricNamespace**: This will be your "Custom namespace" in AWS Cloudwatch>Metrics>All metrics>Custom namespaces. In below image this is represented by CatALog
+    - **metricNamespace**: This will be your "Custom namespace" in AWS Cloudwatch>Metrics>All metrics>Custom namespaces. In the below image this is represented by CatALog
 
     <p align="center">
     <img src="./snapshots/customNameSpace.png" width="600"/>
     </p>
 
-    - **metricUnitLabel**: Explicit  Unit that Cloudwatch uses for EMF Configuration. Please note - must be one of the following as a `string`:
+    - **metricUnitLabel**: The explicit unit that Cloudwatch uses for EMF Configuration. Please note - must be one of the following as a `string`:
       - Seconds | Microseconds | Milliseconds | Bytes | Kilobytes | Megabytes | Gigabytes | Terabytes | Bits | Kilobits | Megabits | Gigabits | Terabits | Percent | Count | Bytes/Second | Kilobytes/Second | Megabytes/Second | Gigabytes/Second | Terabytes/Second | Bits/Second | Kilobits/Second | Megabits/Second | Gigabits/Second | Terabits/Second | Count/Second | None
 
       - To read more about Metric Datum see this <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_MetricDatum.html" target="_blank">link</a>
@@ -88,21 +87,25 @@ Your chosen Integrated Development Environment (i.e. VS Code) must already be co
           </p>
 
 
-    - **resolution**: This is automatically set to default value to 60. If you would like to learn more about High Resolution Metrics please follow the attached <a href= "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html#high-resolution-metrics" target="_blank">link</a>
-    - **deploy**: automatically set to false. The final catalog call you make has to switch deploy flag to true. Failure to do so will cause the cache to grow without bound and use up memory
+    - **resolution**: This parameter can only be set to the numericalthe numerical val.uA of 1 OR 60 , theically set to  is setdefault value to 60. If you would like to learn more about High Resolution Metrics please follow the attached <a href= "https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/publishingMetrics.html#high-resolution-metrics" target="_blank">link</a>
+    - **deploy**: Automatically set to false. The final catalog call you make has to switch deploy flag to true. Failure to do so will cause the cache to grow without bound and use up memory
 
-3. Start Building your Embedded Metric Formatted Logs. Call catalog as many times as needed. 
+3. Start Building your Embedded Metric Formatted Logs. Call `catalog` as many times as needed. 
 <!-- You can also `console.log(cache)` at any time to see your EMF formatted logs being built in real time.  -->
+
 
 4. ON the very last function call - it is important to change the deploy parameter to `true`. 
      - Alternative approach is to deploy your Lambda function with the `deployCatalog()` function call. This will automatically publish to CloudWatch without the need to use the entire arguments required in Cat-A-Log. Place `deployCatalog()` after you last catalog function call.
 
-5. Deploy your code with AWS SAM. This will place the file in AWS Lambda waiting for invocation.
-
+5. Deploy your code with AWS SAM. This will place the file in AWS Lambda waiting for invocation. If you would like to learn more about deploying with SAM please follow the attached
+          <a href= "https://docs.aws.amazon.com/lambda/latest/dg/testing-functions.html" target="_blank">link</a>
 6. Invoke your AWS Lambda Function
 
 7. See your metrics and structured in CloudWatch! 
-
+ <p align="center">
+          <img src="./snapshots/7.2.png" width="600"/>
+          </p>
+          
 ## Open Source Contributions:
 We are actively looking for contributors to our project! In order to get started we ask that you follow the below guidelines:
 
@@ -183,24 +186,3 @@ This project is licensed under the MIT License -  see the [LICENSE](LICENSE) fil
 
 - 🖇️ = LinkedIn
 - 🐙 = Github
-  
-<!-- ## Notes to Self:
-**Structure of the files:**
-
-`index.ts` is compiled to `index.js`. Important to compile `.ts` file to es6 js syntax using the `tsc —target es6 (filepath)` command
-`app.mjs ` is a "pathway" to our lambda function. Here is where we will import catalog function and use it to involke our lambda function
-
-index.ts lines 25-30 is checking to see if the value "level" || "message" || "sampling_rate" || "service" || "timestamp" ||"xray_trace_id"
-
-logger.info gives you some information level is key and value is info
-
-
-if you write name that it will overwrite the keys 
-
-**Tech Challenges**
-Spent 3 days dealing with inconsistencies of ES6/CommonJS in our code before compiling .js in ES6
-
-**To DO LIST ITEMS**
-- How can the user visaulize the cache growing in real time?
-- Creating more professional scrreenshots for the ReadMe - to replace the current ReadMe screenshots
-- Add License Information -->
