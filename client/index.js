@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { Logger } from "@aws-lambda-powertools/logger";
 import { Ajv } from "ajv";
-//cache entries are structured thusly: 'Namespace + Dimensions(Alphabetically)': EMFObject
+//cache entries are structured thusly: 'Namespace + DimensionsKeys(Alphabetically)': EMFObject
 const cache = {};
 //let latency = 300; (Example metric to track)
 //Example for in-line use of Cat-a-log w/maximum arguments: catalog(latency, "Latency" , "lambda-function-metrics", "Milliseconds", {'functionVersion': '$LATEST', 'Server': 'Prod'}, 60, deploy);
@@ -25,7 +25,7 @@ function catalog(trackedVariable_1, metricName_1) {
         for (let i = 0; i < yourKeys.length; i++) {
             if (badKeys.includes(yourKeys[i])) {
                 //if a dimension name or metric name conflicts with native logger keys, throw error
-                throw new Error("metricName, or Dimension names cannot be the same as these native logger keys: level || message || sampling_rate || service || timestamp || xray_trace_id");
+                throw new Error("metricName, or Dimension names CANNOT be the same as these native Logger keys: level || message || sampling_rate || service || timestamp || xray_trace_id");
             }
         }
         //EMF specification catch: if tracked variable is an array with a length greater than 100, throw error and do not log
@@ -34,11 +34,9 @@ function catalog(trackedVariable_1, metricName_1) {
                 throw new Error("metric value cannot have more than 100 elements");
         }
         //EMF specification catch: make sure provided dimension object does not have more than 30 entries
-        // if (Object.keys(CustomerDefinedDimension).length > 30) {
-        //   throw new Error(
-        //     "EMF has a limit of 30 user defined dimension keys per log"
-        //   );
-        // }
+        if (Object.keys(CustomerDefinedDimension).length > 30) {
+            throw new Error("EMF has a limit of 30 user defined dimension keys per log");
+        }
         //Create new instance of Logger to use in function
         const logger = new Logger({ serviceName: "serverlessAirline" });
         //Set up Ajv instance for JSON validation
@@ -204,11 +202,27 @@ function catalog(trackedVariable_1, metricName_1) {
                 logger.info(`Your EMF compliant Structured Metrics Log ${i + 1}`, cache[Object.keys(cache)[i]]);
             }
             //clear cache after logging all cached objects to Lambda
-            console.log("BEFORE:", cache);
+            console.log("BEFORE:", JSON.stringify(cache, null, 2));
             for (var member in cache)
                 delete cache[member];
             console.log("AFTER:", cache);
         }
     });
 }
-export { cache, catalog };
+//If you want to manually deploy the cache without writing a catalog for it
+function deployCatalog() {
+    return __awaiter(this, void 0, void 0, function* () {
+        //Create a new instance of Logger
+        const logger = new Logger({ serviceName: "serverlessAirline" });
+        //Log all cached objects to Cloudwatch through Lambda
+        for (let i = 0; i < Object.keys(cache).length; i++) {
+            logger.info(`Your EMF compliant Structured Metrics Log ${i + 1}`, cache[Object.keys(cache)[i]]);
+        }
+        //clear cache after logging all cached objects to Lambda
+        console.log("BEFORE:", JSON.stringify(cache, null, 2));
+        for (var member in cache)
+            delete cache[member];
+        console.log("AFTER:", cache);
+    });
+}
+export { cache, catalog, deployCatalog };

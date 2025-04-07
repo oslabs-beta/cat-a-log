@@ -41,8 +41,6 @@ export const lambdaHandler = async (event, context) => {
     'CatALog',
     'Milliseconds',
     { functionVersion: '$LATEST', Server: 'Prod' },
-    60,
-    true
   );
   
   deployCatalog();
