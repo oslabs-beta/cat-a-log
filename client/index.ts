@@ -235,4 +235,21 @@ async function catalog(
     console.log("AFTER:", cache);
   }
 }
-export { cache, catalog };
+
+//If you want to manually deploy the cache without writing a catalog for it
+async function deployCatalog() {
+  //Create a new instance of Logger
+  const logger = new Logger({ serviceName: "serverlessAirline" });
+  //Log all cached objects to Cloudwatch through Lambda
+  for (let i = 0; i < Object.keys(cache).length; i++) {
+    logger.info(
+      `Your EMF compliant Structured Metrics Log ${i + 1}`,
+      cache[Object.keys(cache)[i]]
+    );
+  }
+  //clear cache after logging all cached objects to Lambda
+  console.log("BEFORE:", JSON.stringify(cache, null, 2));
+  for (var member in cache) delete cache[member];
+  console.log("AFTER:", cache);
+}
+export { cache, catalog, deployCatalog };
