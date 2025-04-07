@@ -33,7 +33,7 @@ Why use a washing machine when you can do them by hand? Because it saves you tim
 Your chosen Integrated Development Environment (i.e. VS Code) must already be connected to AWS Lambda. For more guidance on setting up AWS Lambda we recommend following this helpful tutorial from AWS: <a href="https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-getting-started-hello-world.html" target="_blank">Deploy Hello World Application with AWS SAM</a>
 
 **Installation:**
-1. Install our package using the command `npm install cat-a-logs` then import the function and cache into your js file that connects to AWS Lambda `import { cache, catalog } from "cat-a-logs/index.js";` Check out Cat-A-Log on npm using the attached link:
+1. Install our package using the command `npm install cat-a-logs` then import the functions into your js file that connects to AWS Lambda `import { deployCatalog, catalog } from "cat-a-logs/index.js";` Check out Cat-A-Log on npm using the attached link:
 <a href="https://www.npmjs.com/package/cat-a-logs?activeTab=readme" target="_blank">Cat-A-Log</a>
 
 2. Now enter your arguments into the catalog function! Let's go through each argument one at a time and see what this looks like. First let's take a look at the function definition:
@@ -95,6 +95,7 @@ Your chosen Integrated Development Environment (i.e. VS Code) must already be co
 <!-- You can also `console.log(cache)` at any time to see your EMF formatted logs being built in real time.  -->
 
 4. ON the very last function call - it is important to change the deploy parameter to `true`. 
+     - Alternative approach is to deploy your Lambda function with the `deployCatalog()` function call. This will automatically publish to CloudWatch without the need to use the entire arguments required in Cat-A-Log. Place `deployCatalog()` after you last catalog function call.
 
 5. Deploy your code with AWS SAM. This will place the file in AWS Lambda waiting for invocation.
 

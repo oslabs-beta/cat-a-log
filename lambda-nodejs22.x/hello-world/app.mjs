@@ -11,7 +11,7 @@
  *
  */
 
-import {catalog} from "cat-a-logs/index.js";
+import {catalog, deployCatalog} from "cat-a-logs/index.js";
 
 export const lambdaHandler = async (event, context) => {
   const response = {
@@ -45,5 +45,6 @@ export const lambdaHandler = async (event, context) => {
     true
   );
   
+  deployCatalog();
   return response;
 };
