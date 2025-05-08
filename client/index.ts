@@ -185,7 +185,7 @@ async function catalog(
           CloudWatchMetrics: [
             {
               Namespace: metricNamespace,
-              Dimensions: sortedCustomerDimensions,
+              Dimensions: [sortedCustomerDimensions],
               Metrics: [
                 {
                   Name: metricName,
