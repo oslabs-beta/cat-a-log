@@ -173,7 +173,7 @@ function catalog(trackedVariable_1, metricName_1) {
                     CloudWatchMetrics: [
                         {
                             Namespace: metricNamespace,
-                            Dimensions: sortedCustomerDimensions,
+                            Dimensions: [sortedCustomerDimensions],
                             Metrics: [
                                 {
                                     Name: metricName,
