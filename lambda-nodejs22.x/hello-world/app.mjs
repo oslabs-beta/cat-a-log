@@ -34,7 +34,7 @@ export const lambdaHandler = async (event, context) => {
     testDimension: 'experimental',
     functionVersion: '$LATEST',
   });
-  catalog(testVariable2, 'Test02', 'lambda-function-metrics2', 'Count', {
+  catalog(testVariable2, 'Test03', 'lambda-function-metrics2', 'Count', {
     testDimension2: 'check',
     functionVersion: '$LATEST',
   });

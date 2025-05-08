@@ -145,10 +145,12 @@ function catalog(trackedVariable_1, metricName_1) {
         //usable instance of the validation JSON
         const validateEmf = ajv.compile(emfSchema);
         //sort customerDimensions key values in alphabetical order. We will use this to keep the keys in our cache consistant. Since the order of the dimensions do not change where the metrics are stored
-        const sortedDimensions = {};
-        for (let i = 0; i < Object.keys(CustomerDefinedDimension).sort().length; i++) {
-            sortedDimensions[Object.keys(CustomerDefinedDimension).sort()[i]] =
-                CustomerDefinedDimension[Object.keys(CustomerDefinedDimension).sort()[i]];
+        // const sortedDimensions: { [key: string]: string } = {};  // Doesn't need to be an object. Made it a string
+        let sortedDimensions = '';
+        const sortedCustomerDimensions = Object.keys(CustomerDefinedDimension).sort();
+        for (let i = 0; i < sortedCustomerDimensions.length; i++) {
+            sortedDimensions +=
+                sortedCustomerDimensions[i];
         }
         //Check if Object with Namespace and Dimensions already exists in cache
         let check = cache[`${metricNamespace}${sortedDimensions}`];
@@ -171,7 +173,7 @@ function catalog(trackedVariable_1, metricName_1) {
                     CloudWatchMetrics: [
                         {
                             Namespace: metricNamespace,
-                            Dimensions: [Object.keys(sortedDimensions)],
+                            Dimensions: sortedCustomerDimensions,
                             Metrics: [
                                 {
                                     Name: metricName,
