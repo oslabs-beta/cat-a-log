@@ -160,7 +160,7 @@ async function catalog(
     i++
   ) {
     sortedDimensions +=
-      CustomerDefinedDimension[sortedCustomerDimensions[i]];
+      sortedCustomerDimensions[i];
   }
   //Check if Object with Namespace and Dimensions already exists in cache
   let check = cache[`${metricNamespace}${sortedDimensions}`];
