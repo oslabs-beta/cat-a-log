@@ -9,6 +9,113 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { Logger } from "@aws-lambda-powertools/logger";
 import { Ajv } from "ajv";
+//Create new instance of Logger to use in function
+const logger = new Logger({ serviceName: "serverlessAirline" });
+//Set up Ajv instance for JSON validation
+const ajv = new Ajv();
+// from AWS: EMF schema to test/validate against with Ajv
+const emfSchema = {
+    type: "object",
+    title: "Root Node",
+    required: ["_aws"],
+    properties: {
+        _aws: {
+            $id: "#/properties/_aws",
+            type: "object",
+            title: "Metadata",
+            required: ["Timestamp", "CloudWatchMetrics"],
+            properties: {
+                Timestamp: {
+                    $id: "#/properties/_aws/properties/Timestamp",
+                    type: "integer",
+                    title: "The Timestamp Schema",
+                    examples: [1565375354953],
+                },
+                CloudWatchMetrics: {
+                    $id: "#/properties/_aws/properties/CloudWatchMetrics",
+                    type: "array",
+                    title: "MetricDirectives",
+                    items: {
+                        $id: "#/properties/_aws/properties/CloudWatchMetrics/items",
+                        type: "object",
+                        title: "MetricDirective",
+                        required: ["Namespace", "Dimensions", "Metrics"],
+                        properties: {
+                            Namespace: {
+                                $id: "#/properties/_aws/properties/CloudWatchMetrics/items/properties/Namespace",
+                                type: "string",
+                                title: "CloudWatch Metrics Namespace",
+                                examples: ["MyApp"],
+                                pattern: "^(.*)$",
+                                minLength: 1,
+                                maxLength: 1024,
+                            },
+                            Dimensions: {
+                                $id: "#/properties/_aws/properties/CloudWatchMetrics/items/properties/Dimensions",
+                                type: "array",
+                                title: "The Dimensions Schema",
+                                minItems: 1,
+                                items: {
+                                    $id: "#/properties/_aws/properties/CloudWatchMetrics/items/properties/Dimensions/items",
+                                    type: "array",
+                                    title: "DimensionSet",
+                                    minItems: 0,
+                                    maxItems: 30,
+                                    items: {
+                                        $id: "#/properties/_aws/properties/CloudWatchMetrics/items/properties/Dimensions/items/items",
+                                        type: "string",
+                                        title: "DimensionReference",
+                                        examples: ["Operation"],
+                                        pattern: "^(.*)$",
+                                        minLength: 1,
+                                        maxLength: 250,
+                                    },
+                                },
+                            },
+                            Metrics: {
+                                $id: "#/properties/_aws/properties/CloudWatchMetrics/items/properties/Metrics",
+                                type: "array",
+                                title: "MetricDefinitions",
+                                items: {
+                                    $id: "#/properties/_aws/properties/CloudWatchMetrics/items/properties/Metrics/items",
+                                    type: "object",
+                                    title: "MetricDefinition",
+                                    required: ["Name"],
+                                    properties: {
+                                        Name: {
+                                            $id: "#/properties/_aws/properties/CloudWatchMetrics/items/properties/Metrics/items/properties/Name",
+                                            type: "string",
+                                            title: "MetricName",
+                                            examples: ["ProcessingLatency"],
+                                            pattern: "^(.*)$",
+                                            minLength: 1,
+                                            maxLength: 1024,
+                                        },
+                                        Unit: {
+                                            $id: "#/properties/_aws/properties/CloudWatchMetrics/items/properties/Metrics/items/properties/Unit",
+                                            type: "string",
+                                            title: "MetricUnit",
+                                            examples: ["Milliseconds"],
+                                            pattern: "^(Seconds|Microseconds|Milliseconds|Bytes|Kilobytes|Megabytes|Gigabytes|Terabytes|Bits|Kilobits|Megabits|Gigabits|Terabits|Percent|Count|Bytes\\/Second|Kilobytes\\/Second|Megabytes\\/Second|Gigabytes\\/Second|Terabytes\\/Second|Bits\\/Second|Kilobits\\/Second|Megabits\\/Second|Gigabits\\/Second|Terabits\\/Second|Count\\/Second|None)$",
+                                        },
+                                        StorageResolution: {
+                                            $id: "#/properties/_aws/properties/CloudWatchMetrics/items/properties/Metrics/items/properties/StorageResolution",
+                                            type: "integer",
+                                            title: "StorageResolution",
+                                            examples: [60],
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    },
+};
+//usable instance of the validation JSON
+const validateEmf = ajv.compile(emfSchema);
 //cache entries are structured thusly: 'Namespace + DimensionsKeys(Alphabetically)': EMFObject
 const cache = {};
 //let latency = 300; (Example metric to track)
@@ -37,113 +144,6 @@ function catalog(trackedVariable_1, metricName_1) {
         if (Object.keys(CustomerDefinedDimension).length > 30) {
             throw new Error("EMF has a limit of 30 user defined dimension keys per log");
         }
-        //Create new instance of Logger to use in function
-        const logger = new Logger({ serviceName: "serverlessAirline" });
-        //Set up Ajv instance for JSON validation
-        const ajv = new Ajv();
-        // from AWS: EMF schema to test/validate against with Ajv
-        const emfSchema = {
-            type: "object",
-            title: "Root Node",
-            required: ["_aws"],
-            properties: {
-                _aws: {
-                    $id: "#/properties/_aws",
-                    type: "object",
-                    title: "Metadata",
-                    required: ["Timestamp", "CloudWatchMetrics"],
-                    properties: {
-                        Timestamp: {
-                            $id: "#/properties/_aws/properties/Timestamp",
-                            type: "integer",
-                            title: "The Timestamp Schema",
-                            examples: [1565375354953],
-                        },
-                        CloudWatchMetrics: {
-                            $id: "#/properties/_aws/properties/CloudWatchMetrics",
-                            type: "array",
-                            title: "MetricDirectives",
-                            items: {
-                                $id: "#/properties/_aws/properties/CloudWatchMetrics/items",
-                                type: "object",
-                                title: "MetricDirective",
-                                required: ["Namespace", "Dimensions", "Metrics"],
-                                properties: {
-                                    Namespace: {
-                                        $id: "#/properties/_aws/properties/CloudWatchMetrics/items/properties/Namespace",
-                                        type: "string",
-                                        title: "CloudWatch Metrics Namespace",
-                                        examples: ["MyApp"],
-                                        pattern: "^(.*)$",
-                                        minLength: 1,
-                                        maxLength: 1024,
-                                    },
-                                    Dimensions: {
-                                        $id: "#/properties/_aws/properties/CloudWatchMetrics/items/properties/Dimensions",
-                                        type: "array",
-                                        title: "The Dimensions Schema",
-                                        minItems: 1,
-                                        items: {
-                                            $id: "#/properties/_aws/properties/CloudWatchMetrics/items/properties/Dimensions/items",
-                                            type: "array",
-                                            title: "DimensionSet",
-                                            minItems: 0,
-                                            maxItems: 30,
-                                            items: {
-                                                $id: "#/properties/_aws/properties/CloudWatchMetrics/items/properties/Dimensions/items/items",
-                                                type: "string",
-                                                title: "DimensionReference",
-                                                examples: ["Operation"],
-                                                pattern: "^(.*)$",
-                                                minLength: 1,
-                                                maxLength: 250,
-                                            },
-                                        },
-                                    },
-                                    Metrics: {
-                                        $id: "#/properties/_aws/properties/CloudWatchMetrics/items/properties/Metrics",
-                                        type: "array",
-                                        title: "MetricDefinitions",
-                                        items: {
-                                            $id: "#/properties/_aws/properties/CloudWatchMetrics/items/properties/Metrics/items",
-                                            type: "object",
-                                            title: "MetricDefinition",
-                                            required: ["Name"],
-                                            properties: {
-                                                Name: {
-                                                    $id: "#/properties/_aws/properties/CloudWatchMetrics/items/properties/Metrics/items/properties/Name",
-                                                    type: "string",
-                                                    title: "MetricName",
-                                                    examples: ["ProcessingLatency"],
-                                                    pattern: "^(.*)$",
-                                                    minLength: 1,
-                                                    maxLength: 1024,
-                                                },
-                                                Unit: {
-                                                    $id: "#/properties/_aws/properties/CloudWatchMetrics/items/properties/Metrics/items/properties/Unit",
-                                                    type: "string",
-                                                    title: "MetricUnit",
-                                                    examples: ["Milliseconds"],
-                                                    pattern: "^(Seconds|Microseconds|Milliseconds|Bytes|Kilobytes|Megabytes|Gigabytes|Terabytes|Bits|Kilobits|Megabits|Gigabits|Terabits|Percent|Count|Bytes\\/Second|Kilobytes\\/Second|Megabytes\\/Second|Gigabytes\\/Second|Terabytes\\/Second|Bits\\/Second|Kilobits\\/Second|Megabits\\/Second|Gigabits\\/Second|Terabits\\/Second|Count\\/Second|None)$",
-                                                },
-                                                StorageResolution: {
-                                                    $id: "#/properties/_aws/properties/CloudWatchMetrics/items/properties/Metrics/items/properties/StorageResolution",
-                                                    type: "integer",
-                                                    title: "StorageResolution",
-                                                    examples: [60],
-                                                },
-                                            },
-                                        },
-                                    },
-                                },
-                            },
-                        },
-                    },
-                },
-            },
-        };
-        //usable instance of the validation JSON
-        const validateEmf = ajv.compile(emfSchema);
         //sort customerDimensions key values in alphabetical order. We will use this to keep the keys in our cache consistant. Since the order of the dimensions do not change where the metrics are stored
         // const sortedDimensions: { [key: string]: string } = {};  // Doesn't need to be an object. Made it a string
         let sortedDimensions = '';
