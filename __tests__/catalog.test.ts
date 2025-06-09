@@ -1,4 +1,4 @@
-import { cache } from  '../client/index.ts';
+import { cache } from '../client/index.ts';
 import { catalog } from '../client/index.ts';
 import Ajv from 'ajv';
 
@@ -130,11 +130,11 @@ describe('Catalog function EMF validation', () => {
     // const cachedValues = Object.values(cache);
     // console.log("cache = ", cache);
     // console.log('cachedValues =', cachedValues)
-    const awsObjects = Object.values(Object.values(cache))[0];
+    //Result of first Object.values call is an array, which is not appropriate for 2nd Object.values call.
+    const awsObjects = Object.values(Object.values(cache))[0];  //<- modify this so for..of will work
     console.log('Final cache structure: ', JSON.stringify(cache, null, 2));
     console.log('awsObjects =', awsObjects);
-
-    for (const awsObject  of awsObjects) {
+    for (const awsObject of awsObjects) {
       const testMetric = awsObject._aws.CloudWatchMetrics[0].Metrics[0];
       console.log('Metric to validate: ', JSON.stringify(testMetric, null, 2));
       const isValidMetric = validateEmf({
@@ -199,7 +199,7 @@ describe('Catalog function EMF validation', () => {
     // store original console.error function for restoring after this test case
     const originalConsoleError = console.error;
     // mocking console.error w/ a mock function that does nothing
-    console.error = jest.fn(); 
+    console.error = jest.fn();
     return expect(
       catalog(75, 'testingMetric2', 'lambda-junction-metrics2', 'invalidUnit', {
         testDimension1: 'KPIs',
@@ -211,7 +211,7 @@ describe('Catalog function EMF validation', () => {
       )
       .finally(() => {
         // restore console.error back to original state for any future following tests
-        console.error = originalConsoleError; 
+        console.error = originalConsoleError;
       });
   });
   // await expect(catalog(75, "testingMetric2", "lambda-junction-metrics2", "invalidUnit", {testDimension1: 'KPIs', functionVersion: '$LATEST'})).rejects.toThrowError("Supplied log failed to comply with EMF schema spec");
